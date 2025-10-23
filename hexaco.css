@@ -1,71 +1,67 @@
-/* Reset and Base Styles */
-/* Reset default browser styles. */
+/* ================================
+Reset and Base Styles
+================================ */
 
-* {
-    color: rgb(195, 195, 195);
-    scroll-snap-type: y mandatory;    
-	box-sizing: border-box;
+*{
+    color: rgb(195,195,195);
+    box-sizing: border-box;
     margin: 0;
     padding: 0;
     font-size: calc(15px + 0.390625vw);
-    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    font-family: 'Franklin Gothic Medium','Arial Narrow',Arial,sans-serif;
 }
-
+  
 html {
+    scroll-snap-type: y mandatory;
     background: rgb(35, 0, 36);
     text-shadow: 2px 2px 5px black;
-    scrollbar-color: rgba(78,110,57,1) rgba(35,0,36,1) 100%; /* Gecko */
-    scrollbar-width: thin; /* Gecko */
-}
-
-html::-webkit-scrollbar { /* Chromium */
-    width: 10px;
+    scrollbar-color: rgba(78,110,57,1) rgba(35,0,36,1) 100%;
+    scrollbar-width: thin;
 }
   
-html::-webkit-scrollbar-track { /* Chromium */
-    background: rgba(35,0,36,1);
-    box-shadow: inset 1px 1px 5px black ;
-}
-  
-html::-webkit-scrollbar-thumb { /* Chromium */
-    background: linear-gradient(0deg, rgba(78,110,57,1), rgb(41, 58, 30));
+html::-webkit-scrollbar{ width:10px; }
+html::-webkit-scrollbar-track{ background: rgba(35,0,36,1); box-shadow: inset 1px 1px 5px black; }
+html::-webkit-scrollbar-thumb,
+html::-webkit-scrollbar-thumb:hover,
+html::-webkit-scrollbar-thumb:active{
+    background: linear-gradient(0deg, rgba(78,110,57,1), rgb(41,58,30));
     border-radius: 10px;
 }
   
-html::-webkit-scrollbar-thumb:hover { /* Chromium */
-    background: linear-gradient(0deg, rgba(78,110,57,1), rgb(41, 58, 30));
-    border-radius: 10px;
-}
+/* ================================
+Typography
+================================ */
   
-html::-webkit-scrollbar-thumb:active { /* Chromium */
-    background: linear-gradient(0deg, rgba(78,110,57,1), rgb(41, 58, 30));
-    border-radius: 10px;
-}
-
-/* Typography */
-/* For defining global font styles. */
-
 p {
     font-size: calc(12px + 0.390625vw);
 }
-
+  
 h2 {
-    color: rgb(0, 127, 99);
+    color: rgb(0,127,99);
     font-family: 'Arabolical', fantasy;
     font-size: calc(76px + 0.390625vw);
     overflow: hidden;
+    margin: 0;
+    position: relative;
 }
-
+  
 h3 {
-    color: rgb(0, 127, 99);
+    color: rgb(0,127,99);
     font-family: 'Arabolical', fantasy;
     font-size: calc(56px + 0.390625vw);
     overflow: hidden;
 }
 
+.bold {
+    font-weight: bold;
+}
+
+.italics {
+    font-weight: italics;
+}
+  
 a {
-    color: rgb(0, 127, 99);
-    text-decoration: none;
+    color: rgb(0,127,99); text-decoration: none;
 }
 
 .scale {
@@ -83,31 +79,16 @@ a {
     
 }
 
-.bold {
-    font-weight: bold;
-}
-
 @font-face {
 	font-family: 'Arabolical';
 	src: url('font/Arabolical.ttf');
 	font-style: normal;
 }
-
-/*  Royalty free commercial use font attribution https://www.fontspace.com/arabolical-font-f1598 */
-
-/* Colors and Themes */
-/* Defining color variables. */
-
-
-
-/* Custom Properties */
-/* Defining reusable CSS variables. */
-
-
-
-/* Layout and Structure */
-/* Overall layout grid, wrappers, and structural elements. */
-
+  
+/* ================================
+Layout and Structure
+================================ */
+  
 section {
     background: radial-gradient(circle, rgba(78,110,57,1) 0%, rgba(35,0,36,1) 100%);
     min-height: 100vh;
@@ -119,92 +100,92 @@ section {
     scroll-snap-align: start;
     overflow: auto;
 }
-
+  
 .page {
     width: 50%;
 }
-
+  
 .top {
-	position: fixed;
+    position: fixed;
     right: 15px;
-	bottom: 20px;
-	padding: 10px 10px 10px 12px;
-	background: rgba(35,0,36,1);
-	border-radius: 100px;
-	box-shadow: 3px 3px 10px #000000;
+    bottom: 20px;
+    padding: 10px 10px 10px 12px;
+    background: rgba(35,0,36,1);
+    border-radius: 100px;
+    box-shadow: 3px 3px 10px #000000;
+}
+  
+/* ================================
+Imagery and Videos
+================================ */
+  
+#hexaco {
+    --pz-radius: 16px;   /* corner radius of the rainbow frame */
+    --pz-border: 5px;    /* rainbow ring thickness */
+    --pz-maxw: 1000px;   /* max displayed width of the image */
 }
 
-/* Table Styles */
-/* Styles related table layout and formatting. */
-
-
-
-/* Navigation and Header */
-/* Styles specific to site navigation and header components. */
-
-
-
-/* Components and Modules */
-/* Reusable components like buttons, cards, modals, etc. */
-
-
-
-/* Forms and Inputs */
-/* Styling form elements and input fields. */
-
-
-
-/* Imagery and Videos */
-/* Styles related to images, videos and icons. */
-
-img {
-    width: 100%;
+/* Rainbow border */
+#hexaco .pz-border {
+    display: inline-block;              /* shrink to content */
+    padding: var(--pz-border);          /* visible ring */
+    border-radius: var(--pz-radius);
+    background: linear-gradient(
+      180deg,
+      #2b9aa4 0%,
+      #805c00 33%,
+      #4e6e39 66%,
+      #007f63 100%
+    );
+}
+  
+/* Inner container clips content; NO gestures, NO overflow past the border */
+#hexaco .pz-container {
+    position: relative;
+    overflow: hidden;                   /* clip the image to the frame */
+    border-radius: var(--pz-radius);    /* frame corners; image has none */
+    background: rgb(35, 0, 36);
+    width: fit-content;
+    max-width: 100%;
+    touch-action: auto;                 /* normal page scrolling */
+    overscroll-behavior: auto;
+}
+  
+/* The image: crisp, centered, no rounded corners, no movement */
+#hexaco .pz-target {
+    display: block;
+    width: auto;                        /* natural size up to max-width */
+    max-width: min(90vw, var(--pz-maxw));
     height: auto;
+    margin: 0;                          /* no accidental offset */
+    border: 0;                          /* no border */
+    border-radius: 0;                   /* <<< no rounded corners on the image */
+    user-select: none;
+    -webkit-user-drag: none;
+    pointer-events: none;               /* make it feel “locked” (no dragging) */
 }
 
-.image {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    text-align: center;
-    background: linear-gradient(to bottom, rgb(43, 154, 164, 0.5), rgb(128, 92, 0), rgb(0, 127, 99));
-    border-radius: 50px;
-    margin-top: 50px;
-    padding: 50px 50px 30px 50px;
-}
-
-/* Utilities and Helpers */
-/* Small reusable classes with a single purpose or function */
-
-
-
-/* Accessibility Enhancements */
-/* Improve accessibility like focus states and screen reader-only text. */
-
-
-
-/* Responsive Styles */
-/* Media queries and styles that target different screen sizes and devices. */
-
-@media only screen and (max-width: 920px) {
-    .page {
-        width: 80%;
-    }
-
+/* ================================
+Responsive Styles
+================================ */
+  
+@media only screen and (max-width: 920px){
+    .page{ width: 80%; }
+  
     h2 {
-        color: rgb(0, 127, 99);
-        font-family: 'Arabolical', fantasy;
-        font-size: calc(76px + 0.390625vw);
-        overflow: hidden;
+      color: rgb(0,127,99);
+      font-family: 'Arabolical', fantasy;
+      font-size: calc(70px + 0.390625vw);
+      overflow: hidden;
     }
-    
+  
     h3 {
-        color: rgb(0, 127, 99);
-        font-family: 'Arabolical', fantasy;
-        font-size: calc(40px + 0.390625vw);
-        overflow: hidden;
+      color: rgb(0,127,99);
+      font-family: 'Arabolical', fantasy;
+      font-size: calc(38px + 0.390625vw);
+      overflow: hidden;
     }
-
+  
     p {
         font-size: calc(11px + 0.390625vw);
     }
@@ -212,31 +193,19 @@ img {
     * {
         font-size: calc(12px + 0.390625vw);
     }
+  
+    /* subtle side padding on mobile */
+    body {
+      padding-left: max(12px, env(safe-area-inset-left));
+      padding-right: max(12px, env(safe-area-inset-right));
+    }
 }
-
-/* State Styles */
-/* Pseudo-classes and interactive states like :hover, :focus, etc. */
-
+  
+/* ================================
+States
+================================ */
+  
 a:hover {
-    color: rgb(43, 154, 164);
-    cursor: pointer;
+    color: rgb(43,154,164); cursor: pointer;
 }
-
-/* Animations and Keyframes */
-/* Defining CSS animations and keyframes. */
-
-
-
-/* Cross-Browser Compatibility */
-/* Styling across different browsers. */
-
-
-
-/* Footers */
-/* Styles specific to the footer section. */
-
-
-
-/* Print Styles */
-/* Styles that apply when the document is printed. */
-
+  
