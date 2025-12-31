@@ -1,116 +1,77 @@
-// Run on page load
-document.addEventListener('DOMContentLoaded', function() {
-    // Only activate on mobile (width <= 920px, matching your CSS)
-    if (window.innerWidth <= 920) {
-      const container = document.querySelector('#hexaco .pz-container');
-      const image = container.querySelector('.pz-target');
+document.addEventListener('DOMContentLoaded', () => {
+  const bars = document.querySelectorAll('.progress-bar, .progress-bar-men, .progress-bar-women');
+
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((entry) => {
+      if (!entry.isIntersecting) return;
+
+      const bar = entry.target;
+      let fill = bar.querySelector('[class^="progress-fill"]');
       
-      if (!container || !image) return; // Safety check
+      if (!fill) {
+        fill = bar.querySelector('div[class*="progress-fill"]');
+      }
       
-      let isZoomed = false; // Track zoom state
-      let startX = 0, startY = 0; // Initial touch positions
-      let translateX = 0, translateY = 0; // Current translation
-      let animationId = null; // For smooth animations
-      
-      // Preload image to get natural dimensions
-      const img = new Image();
-      img.src = image.src;
-      img.onload = function() {
-        const naturalWidth = img.naturalWidth;
-        const naturalHeight = img.naturalHeight;
-        
-        // Click listener on container (since image has pointer-events: none)
-        container.addEventListener('click', function(e) {
-          e.preventDefault(); // Prevent any default link behavior if clicked near
-          
-          if (!isZoomed) {
-            // Get current thumbnail dimensions before changing anything
-            const imageRect = image.getBoundingClientRect();
-            const thumbWidth = imageRect.width;
-            const thumbHeight = imageRect.height;
-            
-            // Lock container to thumbnail size to prevent collapse
-            container.style.width = thumbWidth + 'px';
-            container.style.height = thumbHeight + 'px';
-            
-            // Zoom in: Set image to full size and enable panning
-            image.style.position = 'absolute';
-            image.style.width = naturalWidth + 'px';
-            image.style.height = naturalHeight + 'px';
-            image.style.maxWidth = 'none';  // Override CSS max-width to allow full width
-            image.style.top = '0';
-            image.style.left = '0';
-            image.style.transform = 'translate(0, 0)';
-            translateX = 0;
-            translateY = 0;
-            
-            // Add touch listeners for panning
-            container.addEventListener('touchstart', handleTouchStart, { passive: false });
-            container.addEventListener('touchmove', handleTouchMove, { passive: false });
-            container.addEventListener('touchend', handleTouchEnd, { passive: false });
-            
-            isZoomed = true;
-          } else {
-            // Zoom out: Reset to original state
-            image.style.position = '';
-            image.style.width = '';
-            image.style.height = '';
-            image.style.maxWidth = '';  // Reset max-width
-            image.style.top = '';
-            image.style.left = '';
-            image.style.transform = '';
-            
-            // Remove container size lock
-            container.style.width = '';
-            container.style.height = '';
-            
-            // Remove touch listeners
-            container.removeEventListener('touchstart', handleTouchStart);
-            container.removeEventListener('touchmove', handleTouchMove);
-            container.removeEventListener('touchend', handleTouchEnd);
-            
-            isZoomed = false;
-          }
-        });
-      };
-      
-      // Touch event handlers
-      function handleTouchStart(e) {
-        if (e.touches.length === 1) { // Only handle single touch
-          const touch = e.touches[0];
-          startX = touch.clientX - translateX;
-          startY = touch.clientY - translateY;
+      const rightLabel = bar.querySelector('.progress-label');
+      const progress = parseInt(bar.dataset.progress, 10);
+
+      console.log('Bar class:', bar.className);
+      console.log('Detected fill:', fill);
+      console.log('Progress value:', progress);
+
+      if (!isNaN(progress)) {
+        if (fill) {
+          fill.style.width = `${progress}%`;
+        } else {
+          console.warn('Fill not found for this bar!');
+        }
+
+        if (rightLabel) {
+          rightLabel.textContent = `${progress}${getOrdinalSuffix(progress)}`;
         }
       }
-      
-      function handleTouchMove(e) {
-        if (e.touches.length === 1 && isZoomed) {
-          e.preventDefault(); // Prevent page scroll
-          const touch = e.touches[0];
-          translateX = touch.clientX - startX;
-          translateY = touch.clientY - startY;
-          
-          // Constrain panning: Don't let the image be dragged out of bounds
-          const containerRect = container.getBoundingClientRect();
-          const imageRect = image.getBoundingClientRect();
-          const maxTranslateX = Math.max(0, imageRect.width - containerRect.width);
-          const maxTranslateY = Math.max(0, imageRect.height - containerRect.height);
-          translateX = Math.max(-maxTranslateX, Math.min(0, translateX));
-          translateY = Math.max(-maxTranslateY, Math.min(0, translateY));
-          
-          // Smooth animation
-          if (animationId) cancelAnimationFrame(animationId);
-          animationId = requestAnimationFrame(() => {
-            image.style.transform = `translate(${translateX}px, ${translateY}px)`;
-          });
-        }
-      }
-      
-      function handleTouchEnd(e) {
-        // Reset for next touch
-        startX = 0;
-        startY = 0;
-      }
+
+      observer.unobserve(bar);
+    });
+  }, { threshold: 0.1 });
+
+  bars.forEach(bar => observer.observe(bar));
+
+  (function () {
+    const scroller =
+      document.querySelector('.snap-wrap') ||
+      document.querySelector('.scroll-sections') ||
+      document.scrollingElement ||
+      document.documentElement;
+
+    const EPS = 0.01;
+
+    function isZoomed() {
+      return window.visualViewport
+        ? Math.abs(window.visualViewport.scale - 1) > EPS
+        : false;
     }
-  });
-  
+
+    function syncZoomState() {
+      scroller.classList.toggle('zoomed', isZoomed());
+    }
+
+    syncZoomState();
+
+    if (window.visualViewport) {
+      window.visualViewport.addEventListener('resize', syncZoomState);
+      window.visualViewport.addEventListener('scroll', syncZoomState);
+    }
+
+    window.addEventListener('resize', syncZoomState);
+  })();
+});
+
+function getOrdinalSuffix(n) {
+  const j = n % 10;
+  const k = n % 100;
+  if (j === 1 && k !== 11) return 'st';
+  if (j === 2 && k !== 12) return 'nd';
+  if (j === 3 && k !== 13) return 'rd';
+  return 'th';
+}
