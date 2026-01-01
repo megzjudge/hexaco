@@ -1,121 +1,141 @@
-document.addEventListener('DOMContentLoaded', () => {
-  const bellDiv = document.getElementById('bellCurve');
-  if (!bellDiv) return;
+const graphsData = [
+  {id:'bellCurve1', title:'Honesty-Humility', value:3.39},
+  {id:'bellCurve2', title:'Emotionality', value:2.62},
+  {id:'bellCurve3', title:'Agreeableness', value:4.28},
+  {id:'bellCurve4', title:'Conscientiousness', value:4.59},
+  {id:'bellCurve5', title:'Extraversion', value:6.66},
+  {id:'bellCurve6', title:'Openness to Experience', value:7.63},
 
-  const bellObserver = new IntersectionObserver((entries) => {
+  {id:'bellCurve7', title:'Honesty-Humility: Sincerity', value:2.81},
+  {id:'bellCurve8', title:'Honesty-Humility: Fairness', value:3.55},
+  {id:'bellCurve9', title:'Honesty-Humility: Greed Avoidance', value:6.12},
+  {id:'bellCurve10', title:'Honesty-Humility: Modesty', value:2.6},
+
+  {id:'bellCurve11', title:'Emotionality: Fearfulness', value:3.42},
+  {id:'bellCurve12', title:'Emotionality: Anxiety', value:2.87},
+  {id:'bellCurve13', title:'Emotionality: Dependence', value:2.4},
+  {id:'bellCurve14', title:'Emotionality: Sentimentality', value:5.04},
+
+  {id:'bellCurve15', title:'Extraversion: Social Self-Esteem', value:6.74},
+  {id:'bellCurve16', title:'Extraversion: Social Boldness', value:7.29},
+  {id:'bellCurve17', title:'Extraversion: Sociability', value:5.88},
+  {id:'bellCurve18', title:'Extraversion: Liveliness', value:4.98},
+
+  {id:'bellCurve19', title:'Agreeableness: Forgivingness', value:4.07},
+  {id:'bellCurve20', title:'Agreeableness: Gentleness', value:3.32},
+  {id:'bellCurve21', title:'Agreeableness: Flexibility', value:6.3},
+  {id:'bellCurve22', title:'Agreeableness: Patience', value:4.24},
+
+  {id:'bellCurve23', title:'Conscientiousness: Organization', value:3.64},
+  {id:'bellCurve24', title:'Conscientiousness: Diligence', value:5.34},
+  {id:'bellCurve25', title:'Conscientiousness: Perfectionism', value:6.96},
+  {id:'bellCurve26', title:'Conscientiousness: Prudence', value:3.07},
+
+  {id:'bellCurve27', title:'Openness to Experience: Aesthetic Appreciation', value:6.71},
+  {id:'bellCurve28', title:'Openness to Experience: Inquisitiveness', value:7.09},
+  {id:'bellCurve29', title:'Openness to Experience: Creativity', value:6.65},
+  {id:'bellCurve30', title:'Openness to Experience: Unconventionality', value:7.43},
+
+  {id:'bellCurve31', title:'Interstitial Scale: Altruism', value:4.1}
+];
+
+function renderBellCurve(containerId, title, userValue) {
+  const bellDiv = document.getElementById(containerId);
+  if(!bellDiv) return;
+
+  const bellObserver = new IntersectionObserver(entries => {
     entries.forEach(entry => {
-      if (!entry.isIntersecting) return;
+      if(!entry.isIntersecting) return;
 
-      // --- Parameters ---
       const mean = 5.0;
-      const stdDev = 1.5;
-      const minX = 0;
-      const maxX = 10;
-      const userValue = 3.39;
-
-      // --- Generate bell curve data ---
-      const steps = 1000;
-      const x = [];
-      const y = [];
-      for (let i = 0; i <= steps; i++) {
-        const xi = minX + (maxX - minX) * i / steps;
+      const stdDev = 0.78;
+      const minX = 0, maxX = 10, steps = 1000;
+      const x=[], y=[];
+      for(let i=0;i<=steps;i++){
+        const xi = minX + (maxX - minX) * i/steps;
         x.push(xi);
-        y.push((1 / (stdDev * Math.sqrt(2 * Math.PI))) * Math.exp(-0.5 * Math.pow((xi - mean)/stdDev, 2)));
+        y.push((1/(stdDev*Math.sqrt(2*Math.PI)))*Math.exp(-0.5*((xi-mean)/stdDev)**2));
       }
 
-      // --- Color Palette Points ---
+      // Gradient colors
       const colorStops = [
-        {x: 0, color: [0,0,139]},       // dark blue
-        {x: 2, color: [0,0,205]},       // medium blue
-        {x: 4, color: [0,255,255]},     // cyan
-        {x: 6, color: [0,255,255]},     // cyan plateau
-        {x: 8, color: [0,0,205]},       // medium blue
-        {x: 10, color: [0,0,139]}       // dark blue
+        {x:0,color:[0,44,55]},
+        {x:3.8,color:[0,109,121]},
+        {x:4.5,color:[94,182,194]},
+        {x:5.5,color:[94,182,194]},
+        {x:6.2,color:[0,109,121]},
+        {x:10,color:[0,44,55]}
       ];
-
-      // --- Interpolate color function ---
-      function getColorForX(xVal) {
-        for (let i = 0; i < colorStops.length - 1; i++) {
-          const a = colorStops[i];
-          const b = colorStops[i+1];
-          if (xVal >= a.x && xVal <= b.x) {
-            const t = (xVal - a.x)/(b.x - a.x);
-            const r = Math.round(a.color[0] + t*(b.color[0]-a.color[0]));
-            const g = Math.round(a.color[1] + t*(b.color[1]-a.color[1]));
-            const bC = Math.round(a.color[2] + t*(b.color[2]-a.color[2]));
+      function getColorForX(xVal){
+        for(let i=0;i<colorStops.length-1;i++){
+          const a=colorStops[i], b=colorStops[i+1];
+          if(xVal>=a.x && xVal<=b.x){
+            const t=(xVal-a.x)/(b.x-a.x);
+            const r=Math.round(a.color[0]+t*(b.color[0]-a.color[0]));
+            const g=Math.round(a.color[1]+t*(b.color[1]-a.color[1]));
+            const bC=Math.round(a.color[2]+t*(b.color[2]-a.color[2]));
             return `rgb(${r},${g},${bC})`;
           }
         }
-        // default
         return `rgb(0,0,139)`;
       }
 
-      // --- Create thin traces for gradient ---
-      const traces = [];
-      const segmentSize = 5; // smaller = smoother
-      for (let i = 0; i < x.length; i += segmentSize) {
-        const segX = x.slice(i, i+segmentSize+1);
-        const segY = y.slice(i, i+segmentSize+1);
-        if (segX.length < 2) continue;
+      // Traces
+      const traces=[];
+      const segmentSize=5;
+      for(let i=0;i<x.length;i+=segmentSize){
+        const segX=x.slice(i,i+segmentSize+1);
+        const segY=y.slice(i,i+segmentSize+1);
+        if(segX.length<2) continue;
         const color = getColorForX((segX[0]+segX[segX.length-1])/2);
-        traces.push({
-          x: segX,
-          y: segY.map(()=>0), // start empty
-          fill: 'tozeroy',
-          type: 'scatter',
-          mode: 'lines',
-          line: {color: color, width: 3}
-        });
+        traces.push({x:segX, y:segY.map(()=>0), fill:'tozeroy', type:'scatter', mode:'lines', line:{color,color,width:3}});
       }
 
-      // --- Animation frames ---
-      const frames = [];
-      const meanIdx = x.findIndex(v => v >= mean);
-      const maxStep = Math.max(meanIdx, x.length - meanIdx);
-      const stepIncrement = 5;
-
-      for (let step = 0; step <= maxStep; step += stepIncrement) {
-        const frameData = traces.map(trace => {
+      // Animation frames
+      const frames=[], meanIdx = x.findIndex(v=>v>=mean), maxStep=Math.max(meanIdx,x.length-meanIdx), stepIncrement=5;
+      for(let step=0;step<=maxStep;step+=stepIncrement){
+        const frameData = traces.map(trace=>{
           const newY = trace.y.slice();
-          trace.x.forEach((xi, idx) => {
-            const xiIdx = x.findIndex(v => v === xi);
-            if (xiIdx >= meanIdx - step && xiIdx <= meanIdx + step) {
-              newY[idx] = y[xiIdx];
-            }
+          trace.x.forEach((xi,idx)=>{
+            const xiIdx = x.findIndex(val=>val===xi);
+            if(xiIdx>=meanIdx-step && xiIdx<=meanIdx+step) newY[idx]=y[xiIdx];
           });
-          return {y: newY};
+          return {y:newY};
         });
-        frames.push({data: frameData});
+        frames.push({data:frameData});
       }
 
-      // --- Layout with red line for user value ---
+      // Percentile annotations
+      function rgb(arr){return `rgb(${arr[0]},${arr[1]},${arr[2]})`;}
+      const annotations=[
+        {x:2,text:"10th percentile", color:rgb(colorStops[1].color)},
+        {x:4.5,text:"10-50th percentile", color:rgb(colorStops[3].color)},
+        {x:5.5,text:"50-90th percentile", color:rgb(colorStops[3].color)},
+        {x:8,text:"90th percentile", color:rgb(colorStops[4].color)}
+      ].map(a=>({x:a.x,y:0,text:a.text,showarrow:false,yshift:-10,font:{color:a.color,size:12},align:'center'}));
+
+      // Layout
       const layout = {
-        title: 'Animated Bell Curve',
-        xaxis: {title: 'Score'},
-        yaxis: {title: 'Probability Density'},
-        shapes: [
-          {
-            type: 'line',
-            x0: userValue,
-            x1: userValue,
-            y0: 0,
-            y1: Math.max(...y),
-            line: {color: 'red', width: 3, dash: 'dot'}
-          }
-        ]
+        title: title,
+        xaxis:{title:'Score'},
+        yaxis:{title:'Population Likelihood'},
+        showlegend:false,
+        annotations: annotations,
+        shapes:[{type:'line', x0:userValue, x1:userValue, y0:0, y1:Math.max(...y), line:{color:'red', width:3, dash:'dot'}}]
       };
 
-      // --- Render and animate ---
-      Plotly.newPlot('bellCurve', traces, layout).then(() => {
-        Plotly.animate('bellCurve', frames, {
-          frame: {duration: 30, redraw: true},
-          transition: {duration: 0}
-        });
+      Plotly.newPlot(bellDiv,traces,layout,{displayModeBar:false}).then(()=>{
+        Plotly.animate(bellDiv,frames,{frame:{duration:30,redraw:true},transition:{duration:0}});
       });
 
       bellObserver.unobserve(entry.target);
     });
-  }, { threshold: 0.1 });
+  },{threshold:0.1});
 
   bellObserver.observe(bellDiv);
+}
+
+// Render all
+graphsData.forEach(g=>{
+  renderBellCurve(g.id,g.title,g.value);
 });
