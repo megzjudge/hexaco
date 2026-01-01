@@ -18,15 +18,9 @@ document.addEventListener('DOMContentLoaded', () => {
       const rightLabel = bar.querySelector('.progress-label');
       const progress = parseInt(bar.dataset.progress, 10);
 
-      console.log('Bar class:', bar.className);
-      console.log('Detected fill:', fill);
-      console.log('Progress value:', progress);
-
       if (!isNaN(progress)) {
         if (fill) {
           fill.style.width = `${progress}%`;
-        } else {
-          console.warn('Fill not found for this bar!');
         }
 
         if (rightLabel) {
@@ -86,7 +80,7 @@ function getOrdinalSuffix(n) {
 }
 
 // ----------------------
-// Bell Curve Animation
+// Bell Curve Animation with 5-zone Gradient
 // ----------------------
 document.addEventListener('DOMContentLoaded', () => {
   const bellDiv = document.getElementById('bellCurve');
@@ -101,7 +95,7 @@ document.addEventListener('DOMContentLoaded', () => {
       const stdDev = 1.5;
       const minX = 0;
       const maxX = 10;
-      const userValue = 3.39;  // Can also read from data attribute
+      const userValue = 3.39;  // Can also read dynamically via data attribute
 
       // --- Generate Bell Curve Data ---
       const steps = 1000;
@@ -113,35 +107,56 @@ document.addEventListener('DOMContentLoaded', () => {
           y.push((1 / (stdDev * Math.sqrt(2 * Math.PI))) * Math.exp(-0.5 * Math.pow((xi - mean)/stdDev, 2)));
       }
 
+      // --- Define Color Zones ---
+      const colorRanges = [
+        {start: 0, end: 2, color: 'darkblue'},
+        {start: 2, end: 4, color: 'mediumblue'},
+        {start: 4, end: 6, color: 'cyan'},
+        {start: 6, end: 8, color: 'mediumblue'},
+        {start: 8, end: 10, color: 'darkblue'}
+      ];
+
+      // --- Create Traces for Each Color Zone ---
+      const traces = colorRanges.map(range => {
+        const segmentX = [];
+        const segmentY = [];
+        for (let i = 0; i < x.length; i++) {
+          if (x[i] >= range.start && x[i] <= range.end) {
+            segmentX.push(x[i]);
+            segmentY.push(0); // start empty for animation
+          }
+        }
+        return {
+          x: segmentX,
+          y: segmentY,
+          fill: 'tozeroy',
+          line: {color: range.color, width: 3},
+          type: 'scatter',
+          mode: 'lines'
+        };
+      });
+
       // --- Create Animation Frames ---
-      const fillY = new Array(y.length).fill(0);
       const frames = [];
       const meanIdx = x.findIndex(v => v >= mean);
-      const maxStep = Math.max(meanIdx, y.length - meanIdx);
+      const maxStep = Math.max(meanIdx, x.length - meanIdx);
       const stepSize = 5;
 
       for (let step = 0; step <= maxStep; step += stepSize) {
-          const newY = fillY.slice();
-          for (let i = meanIdx - step; i <= meanIdx; i++) {
-              if (i >= 0) newY[i] = y[i];
-          }
-          for (let i = meanIdx; i <= meanIdx + step; i++) {
-              if (i < y.length) newY[i] = y[i];
-          }
-          frames.push({data: [{y: newY}]});
+        const frameData = traces.map(trace => {
+          const newY = trace.y.slice();
+          trace.x.forEach((xi, idx) => {
+            const xiIdx = x.findIndex(val => val === xi);
+            if (xiIdx >= meanIdx - step && xiIdx <= meanIdx + step) {
+              newY[idx] = y[xiIdx];
+            }
+          });
+          return {y: newY};
+        });
+        frames.push({data: frameData});
       }
 
-      // --- Gradient Colors along the Curve ---
-      // We'll approximate by setting line color to cyan and fill will remain dynamic
-      const trace = {
-          x: x,
-          y: fillY,
-          mode: 'lines',
-          line: {color: 'cyan', width: 3},
-          fill: 'tozeroy',
-          type: 'scatter'
-      };
-
+      // --- Layout with Red Line for User Value ---
       const layout = {
           title: 'Animated Bell Curve',
           xaxis: {title: 'Score'},
@@ -159,7 +174,7 @@ document.addEventListener('DOMContentLoaded', () => {
       };
 
       // --- Render and Animate ---
-      Plotly.newPlot('bellCurve', [trace], layout).then(() => {
+      Plotly.newPlot('bellCurve', traces, layout).then(() => {
           Plotly.animate('bellCurve', frames, {
               frame: {duration: 30, redraw: true},
               transition: {duration: 0}
