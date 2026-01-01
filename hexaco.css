@@ -14,7 +14,6 @@ Reset and Base Styles
 html {
     scroll-snap-type: y mandatory;
     background: rgb(35, 0, 36);
-    text-shadow: 2px 2px 5px black;
     scrollbar-color: rgba(78,110,57,1) rgba(35,0,36,1) 100%;
     scrollbar-width: thin;
 }
@@ -34,6 +33,7 @@ Typography
   
 p {
     font-size: calc(12px + 0.390625vw);
+    text-shadow: 2px 2px 5px black;
 }
   
 h2 {
@@ -273,11 +273,14 @@ Imagery and Videos
     content: "Women Mean";
 }
 
+/* ================================
+Bell Curve
+================================ */
+
 #bellCurve {
     width: 90%;
     max-width: 900px;
     height: 500px;
-    text-shadow: 2px 2px 5px rgba(0, 0, 0, 0);
 }
 
 /* ================================

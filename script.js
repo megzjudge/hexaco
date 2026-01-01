@@ -108,10 +108,10 @@ function renderBellCurve(containerId, title, userValue) {
       // Percentile annotations
       function rgb(arr){return `rgb(${arr[0]},${arr[1]},${arr[2]})`;}
       const annotations=[
-        {x:2,text:"10th percentile", color:rgb(colorStops[1].color)},
-        {x:4.5,text:"10-50th percentile", color:rgb(colorStops[3].color)},
-        {x:5.5,text:"50-90th percentile", color:rgb(colorStops[3].color)},
-        {x:8,text:"90th percentile", color:rgb(colorStops[4].color)}
+        {x:2,text:"<10th percentile", color:rgb(colorStops[1].color)},
+        {x:4.5,text:"10-50th", color:rgb(colorStops[3].color)},
+        {x:5.5,text:"50-90th", color:rgb(colorStops[3].color)},
+        {x:8,text:">90th percentile", color:rgb(colorStops[4].color)}
       ].map(a=>({x:a.x,y:0,text:a.text,showarrow:false,yshift:-10,font:{color:a.color,size:12},align:'center'}));
 
       // Layout
