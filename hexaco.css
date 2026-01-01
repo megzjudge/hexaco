@@ -76,7 +76,10 @@ a {
 
 .percentile {
     color: rgba(78,110,57,1);
-    
+}
+  
+a:hover {
+    color: rgb(43,154,164); cursor: pointer;
 }
 
 @font-face {
@@ -114,21 +117,57 @@ section {
     border-radius: 100px;
     box-shadow: 3px 3px 10px #000000;
 }
+
+.snap-wrap.zoomed{
+    scroll-snap-type: none;
+}
+
+.snap-wrap.zoomed .page{
+    scroll-snap-align: none;
+    scroll-snap-stop: normal;
+}
+
+.snap-wrap {
+    height: calc(var(--vh, 100dvh));
+    overflow-y: scroll;
+    overflow-x: hidden;
+    scroll-snap-type: y mandatory;
+    scroll-behavior: smooth;
+    -webkit-overflow-scrolling: touch;
+}
+
+.snap-wrap .page {
+    height: calc(var(--vh, 100dvh));
+    scroll-snap-align: start;
+    scroll-snap-stop: always;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    margin: 0 auto;
+    padding: 20px 0;
+    box-sizing: border-box;
+    scroll-snap-stop: normal;
+}
+
+.snap-wrap .grid {
+    display: block;
+    padding-bottom: 0;
+}
   
 /* ================================
 Imagery and Videos
 ================================ */
   
 #hexaco {
-    --pz-radius: 16px;   /* corner radius of the rainbow frame */
-    --pz-border: 5px;    /* rainbow ring thickness */
-    --pz-maxw: 1000px;   /* max displayed width of the image */
+    --pz-radius: 16px;
+    --pz-border: 5px;
+    --pz-maxw: 1000px;
 }
 
 /* Rainbow border */
 #hexaco .pz-border {
-    display: inline-block;              /* shrink to content */
-    padding: var(--pz-border);          /* visible ring */
+    display: inline-block;
+    padding: var(--pz-border);
     border-radius: var(--pz-radius);
     background: linear-gradient(
       180deg,
@@ -139,30 +178,105 @@ Imagery and Videos
     );
 }
   
-/* Inner container clips content; NO gestures, NO overflow past the border */
 #hexaco .pz-container {
     position: relative;
-    overflow: hidden;                   /* clip the image to the frame */
-    border-radius: var(--pz-radius);    /* frame corners; image has none */
+    overflow: hidden;
+    border-radius: var(--pz-radius);
     background: rgb(35, 0, 36);
     width: fit-content;
     max-width: 100%;
-    touch-action: auto;                 /* normal page scrolling */
+    touch-action: auto;
     overscroll-behavior: auto;
 }
   
-/* The image: crisp, centered, no rounded corners, no movement */
 #hexaco .pz-target {
     display: block;
-    width: auto;                        /* natural size up to max-width */
+    width: auto;
     max-width: min(90vw, var(--pz-maxw));
     height: auto;
-    margin: 0;                          /* no accidental offset */
-    border: 0;                          /* no border */
-    border-radius: 0;                   /* <<< no rounded corners on the image */
+    margin: 0;
+    border: 0;
+    border-radius: 0;
     user-select: none;
     -webkit-user-drag: none;
-    pointer-events: none;               /* make it feel “locked” (no dragging) */
+    pointer-events: none;
+}
+
+/* =========================
+   PROGRESS BARS
+   ========================= */
+
+.progress-bar,
+.progress-bar-men,
+.progress-bar-women {
+    width: 85%;
+    max-width: 400px;
+    height: 20px;
+    background-color: #202020;
+    border-radius: 10px;
+    overflow: hidden;
+    margin: 10px auto;
+    position: relative;
+}
+
+.progress-fill,
+.progress-fill-men,
+.progress-fill-women {
+    width: 0;
+    height: 100%;
+    background-color: #0A7E8C;
+    transition: width var(--me-dur) ease-in-out;
+}
+
+.progress-fill-men {
+    background-color: #8C180A;
+}
+
+.progress-fill-women {
+    background-color: #590A8C;
+}
+
+.progress-label {
+    position: absolute;
+    color: #ffffff;
+    top: 0;
+    right: -45px;
+    width: 80px;
+    text-align: left;
+    top: 2px;
+    font-size: 14px;
+    z-index: 2;
+    font-weight: 500;
+    text-shadow: 0 1px 2px rgba(0,0,0,0.65);
+}
+
+.progress-bar::before,
+.progress-bar-me::before,
+.progress-bar-men::before,
+.progress-bar-women::before {
+    content: "Me";
+    position: absolute;
+    left: 8px;
+    top: 4px;
+    color: #ffffff;
+    font-size: 14px;
+    z-index: 2;
+    font-weight: 500;
+    text-shadow: 0 1px 2px rgba(0,0,0,0.65);
+}
+
+.progress-bar-men::before{
+    content: "Men Mean";
+}
+
+.progress-bar-women::before{
+    content: "Women Mean";
+}
+
+#bellCurve {
+    width: 90%;
+    max-width: 900px;
+    height: 500px;
 }
 
 /* ================================
@@ -194,18 +308,8 @@ Responsive Styles
         font-size: calc(12px + 0.390625vw);
     }
   
-    /* subtle side padding on mobile */
     body {
       padding-left: max(12px, env(safe-area-inset-left));
       padding-right: max(12px, env(safe-area-inset-right));
     }
 }
-  
-/* ================================
-States
-================================ */
-  
-a:hover {
-    color: rgb(43,154,164); cursor: pointer;
-}
-  
