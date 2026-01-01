@@ -59,13 +59,11 @@ function renderBellCurve(containerId, title, userValue) {
 
       // Gradient colors
       const colorStops = [
-        {x:0,color:[0,44,55]},
-        {x:3.8,color:[0,109,121]},
-        {x:4.5,color:[94,182,194]},
-        {x:5.5,color:[94,182,194]},
-        {x:6.2,color:[0,109,121]},
-        {x:10,color:[0,44,55]}
+        {x:3.2,color:[217,148,0]},
+        {x:5,color:[41,140,34]},
+        {x:6.8,color:[217,148,0]} 
       ];
+
       function getColorForX(xVal){
         for(let i=0;i<colorStops.length-1;i++){
           const a=colorStops[i], b=colorStops[i+1];
@@ -77,7 +75,9 @@ function renderBellCurve(containerId, title, userValue) {
             return `rgb(${r},${g},${bC})`;
           }
         }
-        return `rgb(0,0,139)`;
+        // edges: use closest gradient color
+        if(xVal < colorStops[0].x) return `rgb(${colorStops[0].color.join(',')})`;
+        if(xVal > colorStops[colorStops.length-1].x) return `rgb(${colorStops[colorStops.length-1].color.join(',')})`;
       }
 
       // Traces
@@ -91,8 +91,8 @@ function renderBellCurve(containerId, title, userValue) {
         traces.push({x:segX, y:segY.map(()=>0), fill:'tozeroy', type:'scatter', mode:'lines', line:{color,color,width:3}});
       }
 
-      // Animation frames
-      const frames=[], meanIdx = x.findIndex(v=>v>=mean), maxStep=Math.max(meanIdx,x.length-meanIdx), stepIncrement=5;
+      // Animation frames — FASTER
+      const frames=[], meanIdx = x.findIndex(v=>v>=mean), maxStep=Math.max(meanIdx,x.length-meanIdx), stepIncrement=15; // bigger step
       for(let step=0;step<=maxStep;step+=stepIncrement){
         const frameData = traces.map(trace=>{
           const newY = trace.y.slice();
@@ -108,16 +108,16 @@ function renderBellCurve(containerId, title, userValue) {
       // Percentile annotations
       function rgb(arr){return `rgb(${arr[0]},${arr[1]},${arr[2]})`;}
       const annotations=[
-        {x:2,text:"<10th percentile", color:rgb(colorStops[1].color)},
-        {x:4.5,text:"10-50th", color:rgb(colorStops[3].color)},
-        {x:5.5,text:"50-90th", color:rgb(colorStops[3].color)},
-        {x:8,text:">90th percentile", color:rgb(colorStops[4].color)}
+        {x:3.7,text:"<10th", color:rgb(colorStops[2].color)},
+        {x:4.5,text:"10-50th", color:rgb(colorStops[1].color)},
+        {x:5.5,text:"50-90th", color:rgb(colorStops[1].color)},
+        {x:6.3,text:">90th", color:rgb(colorStops[2].color)}
       ].map(a=>({x:a.x,y:0,text:a.text,showarrow:false,yshift:-10,font:{color:a.color,size:12},align:'center'}));
 
       // Layout
       const layout = {
         title: title,
-        xaxis:{title:'Score'},
+        xaxis:{title:'Percentile Score (th)'},
         yaxis:{title:'Population Likelihood'},
         showlegend:false,
         annotations: annotations,
@@ -125,7 +125,8 @@ function renderBellCurve(containerId, title, userValue) {
       };
 
       Plotly.newPlot(bellDiv,traces,layout,{displayModeBar:false}).then(()=>{
-        Plotly.animate(bellDiv,frames,{frame:{duration:30,redraw:true},transition:{duration:0}});
+        // faster frame duration
+        Plotly.animate(bellDiv,frames,{frame:{duration:10,redraw:true},transition:{duration:0}});
       });
 
       bellObserver.unobserve(entry.target);
@@ -135,7 +136,7 @@ function renderBellCurve(containerId, title, userValue) {
   bellObserver.observe(bellDiv);
 }
 
-// Render all
+// Render all 31 graphs
 graphsData.forEach(g=>{
   renderBellCurve(g.id,g.title,g.value);
 });
