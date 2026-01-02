@@ -220,7 +220,7 @@ function renderBellCurve(containerId, title, userValue) {
               l: isMobile ? 15 : 80,
               r: isMobile ? 15 : 80,
               t: isMobile ? 80 : 100,
-              b: isMobile ? 100 : 80
+              b: isMobile ? 100 : 110
           },
           autosize: true
       };
