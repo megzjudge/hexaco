@@ -57,7 +57,6 @@ function renderBellCurve(containerId, title, userValue) {
         y.push((1/(stdDev*Math.sqrt(2*Math.PI)))*Math.exp(-0.5*((xi-mean)/stdDev)**2));
       }
 
-      // Gradient colors
       const colorStops = [
         {x:3.2,color:[217,148,0]},
         {x:5,color:[41,140,34]},
@@ -75,12 +74,10 @@ function renderBellCurve(containerId, title, userValue) {
             return `rgb(${r},${g},${bC})`;
           }
         }
-        // edges: use closest gradient color
         if(xVal < colorStops[0].x) return `rgb(${colorStops[0].color.join(',')})`;
         if(xVal > colorStops[colorStops.length-1].x) return `rgb(${colorStops[colorStops.length-1].color.join(',')})`;
       }
 
-      // Traces
       const traces=[];
       const segmentSize=5;
       for(let i=0;i<x.length;i+=segmentSize){
@@ -132,27 +129,16 @@ function renderBellCurve(containerId, title, userValue) {
         }));
       }
 
-      const secondaryAnnotation = isMobile 
-        ? {
-            x: 0.5,
-            y: 1.1,
-            xref: 'paper',
-            yref: 'paper',
-            text: `${userValue}`,
-            showarrow: false,
-            font: { color: 'rgba(255,0,0,0)', size: 16 },
-            align: 'center'
-          }
-        : {
-            x: userValue,
-            y: 1.04,
-            xref: 'x',
-            yref: 'paper',
-            text: `${userValue}`,
-            showarrow: false,
-            font: { color: 'rgba(255,0,0,0)', size: 14 },
-            align: 'center'
-          };
+      const secondaryAnnotation = {
+        x: userValue,
+        y: 1.04,
+        xref: 'x',
+        yref: 'paper',
+        text: `${userValue}`,
+        showarrow: false,
+        font: { color: 'rgba(255,0,0,0)', size: 14 },
+        align: 'center'
+      };
 
       const frames=[], meanIdx = x.findIndex(v=>v>=mean), maxStep=Math.max(meanIdx,x.length-meanIdx), stepIncrement=15; // bigger step
       for(let step=0;step<=maxStep;step+=stepIncrement){
