@@ -91,9 +91,73 @@ function renderBellCurve(containerId, title, userValue) {
         traces.push({x:segX, y:segY.map(()=>0), fill:'tozeroy', type:'scatter', mode:'lines', line:{color,color,width:3}});
       }
 
-      // Animation frames — FASTER
+      function rgb(arr){ return `rgb(${arr[0]},${arr[1]},${arr[2]})`; }
+
+      const isMobile = window.innerWidth <= 768;
+
+      let annotations;
+
+      if(isMobile){
+        annotations = [
+          { x: 4, text: "10-50th", color: rgb(colorStops[1].color), yOffset: -35 }, 
+          { x: 6, text: "50-90th", color: rgb(colorStops[1].color), yOffset: -35 },
+          { x: 3.7, text: "<10th", color: rgb(colorStops[2].color), yOffset: -50 },
+          { x: 6.3, text: ">90th", color: rgb(colorStops[2].color), yOffset: -50 }
+        ].map(a => ({
+          x: a.x,
+          y: 0,
+          xref: 'x',
+          yref: 'paper',
+          text: a.text,
+          showarrow: false,
+          yshift: a.yOffset,
+          font: { color: a.color, size: 12 },
+          align: 'center'
+        }));
+      } else {
+        annotations = [
+          { x: 3.7, text:"<10th", color:rgb(colorStops[2].color)},
+          { x: 4.5, text:"10-50th", color:rgb(colorStops[1].color)},
+          { x: 5.5, text:"50-90th", color:rgb(colorStops[1].color)},
+          { x: 6.3, text:">90th", color:rgb(colorStops[2].color)}
+        ].map(a=>({
+          x: a.x,
+          y: -0.14,
+          xref: 'x',
+          yref: 'paper',
+          text: a.text,
+          showarrow: false,
+          font: { color: a.color, size: 12 },
+          align: 'center'
+        }));
+      }
+
+      const secondaryAnnotation = isMobile 
+        ? {
+            x: 0.5,
+            y: 1.1,
+            xref: 'paper',
+            yref: 'paper',
+            text: `${userValue}`,
+            showarrow: false,
+            font: { color: 'rgba(255,0,0,0)', size: 16 },
+            align: 'center'
+          }
+        : {
+            x: userValue,
+            y: 1.04,
+            xref: 'x',
+            yref: 'paper',
+            text: `${userValue}`,
+            showarrow: false,
+            font: { color: 'rgba(255,0,0,0)', size: 14 },
+            align: 'center'
+          };
+
       const frames=[], meanIdx = x.findIndex(v=>v>=mean), maxStep=Math.max(meanIdx,x.length-meanIdx), stepIncrement=15; // bigger step
       for(let step=0;step<=maxStep;step+=stepIncrement){
+        const progress = step / maxStep;
+        const opacity = progress < 0.3 ? 0 : Math.min(1, (progress - 0.3) / 0.1);
         const frameData = traces.map(trace=>{
           const newY = trace.y.slice();
           trace.x.forEach((xi,idx)=>{
@@ -102,31 +166,73 @@ function renderBellCurve(containerId, title, userValue) {
           });
           return {y:newY};
         });
-        frames.push({data:frameData});
+        const frameLayout = {
+          shapes: [
+            {
+              type: 'line',
+              x0: userValue,
+              x1: userValue,
+              y0: 0,
+              y1: Math.max(...y),
+              line: { color: `rgba(255,0,0,${opacity})`, width: 3, dash: 'dot' }
+            }
+          ],
+          annotations: [
+            ...annotations,
+            {
+              ...secondaryAnnotation,
+              font: { ...secondaryAnnotation.font, color: `rgba(255,0,0,${opacity})` }
+            }
+          ]
+        };
+        frames.push({data:frameData, layout: frameLayout});
       }
 
-      // Percentile annotations
-      function rgb(arr){return `rgb(${arr[0]},${arr[1]},${arr[2]})`;}
-      const annotations=[
-        {x:3.7,text:"<10th", color:rgb(colorStops[2].color)},
-        {x:4.5,text:"10-50th", color:rgb(colorStops[1].color)},
-        {x:5.5,text:"50-90th", color:rgb(colorStops[1].color)},
-        {x:6.3,text:">90th", color:rgb(colorStops[2].color)}
-      ].map(a=>({x:a.x,y:0,text:a.text,showarrow:false,yshift:-10,font:{color:a.color,size:12},align:'center'}));
-
-      // Layout
       const layout = {
-        title: title,
-        xaxis:{title:'Percentile Score (th)'},
-        yaxis:{title:'Population Likelihood'},
-        showlegend:false,
-        annotations: annotations,
-        shapes:[{type:'line', x0:userValue, x1:userValue, y0:0, y1:Math.max(...y), line:{color:'red', width:3, dash:'dot'}}]
+          title: title,
+          xaxis: {
+              title: {
+                  text: 'Percentile Score (th)',
+                  standoff: 50,
+              },
+              zeroline: false,
+              showgrid: false,
+              tickvals: [0,1,2,3,4,5,6,7,8,9,10]
+          },
+          yaxis: { 
+              title: 'Population Likelihood',
+              showticklabels: false,
+              showgrid: false
+          },
+          showlegend: false,
+          annotations: [...annotations, secondaryAnnotation],
+          shapes: [
+              {
+                  type: 'line',
+                  x0: userValue,
+                  x1: userValue,
+                  y0: 0,
+                  y1: Math.max(...y),
+                  line: { color: 'rgba(255,0,0,0)', width: 3, dash: 'dot' }
+              }
+          ],
+          margin: {
+              l: isMobile ? 15 : 80,
+              r: isMobile ? 15 : 80,
+              t: isMobile ? 80 : 100,
+              b: isMobile ? 100 : 80
+          },
+          autosize: true
       };
 
-      Plotly.newPlot(bellDiv,traces,layout,{displayModeBar:false}).then(()=>{
-        // faster frame duration
-        Plotly.animate(bellDiv,frames,{frame:{duration:10,redraw:true},transition:{duration:0}});
+      Plotly.newPlot(bellDiv, traces, layout, {
+          displayModeBar: false,
+          responsive: true
+      }).then(() => {
+          Plotly.animate(bellDiv, frames, {
+              frame: {duration: 10, redraw: true},
+              transition: {duration: 0}
+          });
       });
 
       bellObserver.unobserve(entry.target);
@@ -136,7 +242,7 @@ function renderBellCurve(containerId, title, userValue) {
   bellObserver.observe(bellDiv);
 }
 
-// Render all 31 graphs
 graphsData.forEach(g=>{
   renderBellCurve(g.id,g.title,g.value);
 });
+
