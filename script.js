@@ -134,7 +134,7 @@ function renderBellCurve(containerId, title, userValue) {
       const meanIdx = x.findIndex(v => v >= mean);
       const maxStep = Math.max(meanIdx, x.length - meanIdx);
 
-      const stepIncrement = isMobile ? 28 : 10;
+      const stepIncrement = isMobile ? 22 : 15;
       const frames = [];
 
       // Cache yMax once (avoid Math.max(...y) inside loops)
@@ -209,10 +209,10 @@ function renderBellCurve(containerId, title, userValue) {
         displayModeBar: false,
         responsive: true
       }).then(() => {
-        Plotly.animate(bellDiv, frames, {
-          frame: { duration: isMobile ? 18 : 14, redraw: true },
-          transition: { duration: 0 }
-        });
+      Plotly.animate(bellDiv, frames, {
+        frame: {duration: 10, redraw: true},
+        transition: {duration: 0}
+      });
       });
 
       bellObserver.unobserve(entry.target);
