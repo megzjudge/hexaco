@@ -228,7 +228,6 @@ function renderBellCurve(containerId, title, userValue) {
   bellObserver.observe(bellDiv);
 }
 
-graphsData.forEach(g=>{
-  renderBellCurve(g.id,g.title,g.value);
+graphsData.slice(0, 2).forEach(g => {
+  renderBellCurve(g.id, g.title, g.value);
 });
-
