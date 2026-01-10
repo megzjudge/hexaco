@@ -1,3 +1,42 @@
+// --- Render queue helpers ---
+const renderQueue = [];
+let isRendering = false;
+
+function enqueueRender(fn) {
+  renderQueue.push(fn);
+  pumpQueue();
+}
+
+function pumpQueue() {
+  if (isRendering) return;
+
+  const next = renderQueue.shift();
+  if (!next) return;
+
+  isRendering = true;
+
+  const run = () => {
+    Promise.resolve()
+      .then(next)
+      .catch(() => {})
+      .finally(() => {
+        isRendering = false;
+        setTimeout(pumpQueue, 50);
+      });
+  };
+
+  if ('requestIdleCallback' in window) {
+    requestIdleCallback(run, { timeout: 500 });
+  } else {
+    setTimeout(run, 0);
+  }
+}
+
+// --- Render all graphs (queued) ---
+graphsData.forEach(g => {
+  enqueueRender(() => renderBellCurve(g.id, g.title, g.value));
+});
+
 const graphsData = [
   {id:'bellCurve1', title:'Honesty-Humility', value:3.39},
   {id:'bellCurve2', title:'Emotionality', value:2.62},
@@ -49,7 +88,9 @@ function renderBellCurve(containerId, title, userValue) {
 
       const mean = 5.0;
       const stdDev = 0.78;
-      const minX = 0, maxX = 10, steps = 1000;
+      const isMobile = window.innerWidth <= 768;
+      const minX = 0, maxX = 10, steps = isMobile ? 260 : 1000;
+
       const x=[], y=[];
       for(let i=0;i<=steps;i++){
         const xi = minX + (maxX - minX) * i/steps;
@@ -89,8 +130,6 @@ function renderBellCurve(containerId, title, userValue) {
       }
 
       function rgb(arr){ return `rgb(${arr[0]},${arr[1]},${arr[2]})`; }
-
-      const isMobile = window.innerWidth <= 768;
 
       let annotations;
 
@@ -140,7 +179,13 @@ function renderBellCurve(containerId, title, userValue) {
         align: 'center'
       };
 
-      const frames=[], meanIdx = x.findIndex(v=>v>=mean), maxStep=Math.max(meanIdx,x.length-meanIdx), stepIncrement=15; // bigger step
+      const meanIdx = x.findIndex(v => v >= mean);
+      const maxStep = Math.max(meanIdx, x.length - meanIdx);
+
+      // Fewer frames on mobile
+      const stepIncrement = isMobile ? 40 : 15;
+      const frames = [];
+
       for(let step=0;step<=maxStep;step+=stepIncrement){
         const progress = step / maxStep;
         const opacity = progress < 0.3 ? 0 : Math.min(1, (progress - 0.3) / 0.1);
