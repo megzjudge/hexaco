@@ -73,14 +73,25 @@ function renderBellCurve(containerId, title, userValue) {
         return `rgb(${colorStops[colorStops.length-1].color.join(',')})`;
       }
 
-      const traces=[];
-      const segmentSize=5;
-      for(let i=0;i<x.length;i+=segmentSize){
-        const segX=x.slice(i,i+segmentSize+1);
-        const segY=y.slice(i,i+segmentSize+1);
-        if(segX.length<2) continue;
-        const color = getColorForX((segX[0]+segX[segX.length-1])/2);
-        traces.push({x:segX, y:segY.map(()=>0), fill:'tozeroy', type:'scatter', mode:'lines', line:{color,color,width:3}});
+      const traces = [];
+      const traceStarts = []; // index of x/y where this trace begins
+
+      const segmentSize = 5;
+      for (let i = 0; i < x.length; i += segmentSize) {
+        const segX = x.slice(i, i + segmentSize + 1);
+        if (segX.length < 2) continue;
+
+        const color = getColorForX((segX[0] + segX[segX.length - 1]) / 2);
+
+        traceStarts.push(i);
+        traces.push({
+          x: segX,
+          y: new Array(segX.length).fill(0),
+          fill: 'tozeroy',
+          type: 'scatter',
+          mode: 'lines',
+          line: { color, width: 3 }
+        });
       }
 
       function rgb(arr){ return `rgb(${arr[0]},${arr[1]},${arr[2]})`; }
@@ -123,7 +134,7 @@ function renderBellCurve(containerId, title, userValue) {
       const meanIdx = x.findIndex(v => v >= mean);
       const maxStep = Math.max(meanIdx, x.length - meanIdx);
 
-      const stepIncrement = isMobile ? 40 : 15;
+      const stepIncrement = isMobile ? 28 : 10;
       const frames = [];
 
       // Cache yMax once (avoid Math.max(...y) inside loops)
@@ -134,15 +145,18 @@ function renderBellCurve(containerId, title, userValue) {
         const progress = step / maxStep;
         const opacity = progress < 0.3 ? 0 : Math.min(1, (progress - 0.3) / 0.1);
 
-        const frameData = traces.map(trace=>{
-          const newY = trace.y.slice();
-          // NOTE: still expensive due to findIndex; leaving as-is for now per your request
-          trace.x.forEach((xi,idx)=>{
-            const xiIdx = x.findIndex(val=>val===xi);
-            if(xiIdx>=meanIdx-step && xiIdx<=meanIdx+step) newY[idx]=y[xiIdx];
-          });
-          return {y:newY};
-        });
+      const frameData = traces.map((trace, tIdx) => {
+        const newY = trace.y.slice();
+        const start = traceStarts[tIdx];
+
+        for (let idx = 0; idx < trace.x.length; idx++) {
+          const xiIdx = start + idx; // O(1) index lookup
+          if (xiIdx >= meanIdx - step && xiIdx <= meanIdx + step) {
+            newY[idx] = y[xiIdx];
+          }
+        }
+        return { y: newY };
+      });
 
         frames.push({
           data: frameData,
@@ -196,7 +210,7 @@ function renderBellCurve(containerId, title, userValue) {
         responsive: true
       }).then(() => {
         Plotly.animate(bellDiv, frames, {
-          frame: { duration: 10, redraw: true },
+          frame: { duration: isMobile ? 18 : 14, redraw: true },
           transition: { duration: 0 }
         });
       });
