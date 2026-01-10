@@ -1,42 +1,3 @@
-// --- Render queue helpers ---
-const renderQueue = [];
-let isRendering = false;
-
-function enqueueRender(fn) {
-  renderQueue.push(fn);
-  pumpQueue();
-}
-
-function pumpQueue() {
-  if (isRendering) return;
-
-  const next = renderQueue.shift();
-  if (!next) return;
-
-  isRendering = true;
-
-  const run = () => {
-    Promise.resolve()
-      .then(next)
-      .catch(() => {})
-      .finally(() => {
-        isRendering = false;
-        setTimeout(pumpQueue, 50);
-      });
-  };
-
-  if ('requestIdleCallback' in window) {
-    requestIdleCallback(run, { timeout: 500 });
-  } else {
-    setTimeout(run, 0);
-  }
-}
-
-// --- Render all graphs (queued) ---
-graphsData.forEach(g => {
-  enqueueRender(() => renderBellCurve(g.id, g.title, g.value));
-});
-
 const graphsData = [
   {id:'bellCurve1', title:'Honesty-Humility', value:3.39},
   {id:'bellCurve2', title:'Emotionality', value:2.62},
@@ -44,37 +5,30 @@ const graphsData = [
   {id:'bellCurve4', title:'Conscientiousness', value:4.59},
   {id:'bellCurve5', title:'Extraversion', value:6.66},
   {id:'bellCurve6', title:'Openness to Experience', value:7.63},
-
   {id:'bellCurve7', title:'Honesty-Humility: Sincerity', value:2.81},
   {id:'bellCurve8', title:'Honesty-Humility: Fairness', value:3.55},
   {id:'bellCurve9', title:'Honesty-Humility: Greed Avoidance', value:6.12},
   {id:'bellCurve10', title:'Honesty-Humility: Modesty', value:2.6},
-
   {id:'bellCurve11', title:'Emotionality: Fearfulness', value:3.42},
   {id:'bellCurve12', title:'Emotionality: Anxiety', value:2.87},
   {id:'bellCurve13', title:'Emotionality: Dependence', value:2.4},
   {id:'bellCurve14', title:'Emotionality: Sentimentality', value:5.04},
-
   {id:'bellCurve15', title:'Extraversion: Social Self-Esteem', value:6.74},
   {id:'bellCurve16', title:'Extraversion: Social Boldness', value:7.29},
   {id:'bellCurve17', title:'Extraversion: Sociability', value:5.88},
   {id:'bellCurve18', title:'Extraversion: Liveliness', value:4.98},
-
   {id:'bellCurve19', title:'Agreeableness: Forgivingness', value:4.07},
   {id:'bellCurve20', title:'Agreeableness: Gentleness', value:3.32},
   {id:'bellCurve21', title:'Agreeableness: Flexibility', value:6.3},
   {id:'bellCurve22', title:'Agreeableness: Patience', value:4.24},
-
   {id:'bellCurve23', title:'Conscientiousness: Organization', value:3.64},
   {id:'bellCurve24', title:'Conscientiousness: Diligence', value:5.34},
   {id:'bellCurve25', title:'Conscientiousness: Perfectionism', value:6.96},
   {id:'bellCurve26', title:'Conscientiousness: Prudence', value:3.07},
-
   {id:'bellCurve27', title:'Openness to Experience: Aesthetic Appreciation', value:6.71},
   {id:'bellCurve28', title:'Openness to Experience: Inquisitiveness', value:7.09},
   {id:'bellCurve29', title:'Openness to Experience: Creativity', value:6.65},
   {id:'bellCurve30', title:'Openness to Experience: Unconventionality', value:7.43},
-
   {id:'bellCurve31', title:'Interstitial Scale: Altruism', value:4.1}
 ];
 
@@ -116,7 +70,7 @@ function renderBellCurve(containerId, title, userValue) {
           }
         }
         if(xVal < colorStops[0].x) return `rgb(${colorStops[0].color.join(',')})`;
-        if(xVal > colorStops[colorStops.length-1].x) return `rgb(${colorStops[colorStops.length-1].color.join(',')})`;
+        return `rgb(${colorStops[colorStops.length-1].color.join(',')})`;
       }
 
       const traces=[];
@@ -132,7 +86,6 @@ function renderBellCurve(containerId, title, userValue) {
       function rgb(arr){ return `rgb(${arr[0]},${arr[1]},${arr[2]})`; }
 
       let annotations;
-
       if(isMobile){
         annotations = [
           { x: 4, text: "10-50th", color: rgb(colorStops[1].color), yOffset: -35 }, 
@@ -140,12 +93,8 @@ function renderBellCurve(containerId, title, userValue) {
           { x: 3.7, text: "<10th", color: rgb(colorStops[2].color), yOffset: -50 },
           { x: 6.3, text: ">90th", color: rgb(colorStops[2].color), yOffset: -50 }
         ].map(a => ({
-          x: a.x,
-          y: 0,
-          xref: 'x',
-          yref: 'paper',
-          text: a.text,
-          showarrow: false,
+          x: a.x, y: 0, xref: 'x', yref: 'paper',
+          text: a.text, showarrow: false,
           yshift: a.yOffset,
           font: { color: a.color, size: 12 },
           align: 'center'
@@ -157,24 +106,16 @@ function renderBellCurve(containerId, title, userValue) {
           { x: 5.5, text:"50-90th", color:rgb(colorStops[1].color)},
           { x: 6.3, text:">90th", color:rgb(colorStops[2].color)}
         ].map(a=>({
-          x: a.x,
-          y: -0.14,
-          xref: 'x',
-          yref: 'paper',
-          text: a.text,
-          showarrow: false,
+          x: a.x, y: -0.14, xref: 'x', yref: 'paper',
+          text: a.text, showarrow: false,
           font: { color: a.color, size: 12 },
           align: 'center'
         }));
       }
 
       const secondaryAnnotation = {
-        x: userValue,
-        y: 1.04,
-        xref: 'x',
-        yref: 'paper',
-        text: `${userValue}`,
-        showarrow: false,
+        x: userValue, y: 1.04, xref: 'x', yref: 'paper',
+        text: `${userValue}`, showarrow: false,
         font: { color: 'rgba(255,0,0,0)', size: 14 },
         align: 'center'
       };
@@ -182,97 +123,125 @@ function renderBellCurve(containerId, title, userValue) {
       const meanIdx = x.findIndex(v => v >= mean);
       const maxStep = Math.max(meanIdx, x.length - meanIdx);
 
-      // Fewer frames on mobile
       const stepIncrement = isMobile ? 40 : 15;
       const frames = [];
+
+      // Cache yMax once (avoid Math.max(...y) inside loops)
+      let yMax = 0;
+      for (let i = 0; i < y.length; i++) if (y[i] > yMax) yMax = y[i];
 
       for(let step=0;step<=maxStep;step+=stepIncrement){
         const progress = step / maxStep;
         const opacity = progress < 0.3 ? 0 : Math.min(1, (progress - 0.3) / 0.1);
+
         const frameData = traces.map(trace=>{
           const newY = trace.y.slice();
+          // NOTE: still expensive due to findIndex; leaving as-is for now per your request
           trace.x.forEach((xi,idx)=>{
             const xiIdx = x.findIndex(val=>val===xi);
             if(xiIdx>=meanIdx-step && xiIdx<=meanIdx+step) newY[idx]=y[xiIdx];
           });
           return {y:newY};
         });
-        const frameLayout = {
-          shapes: [
-            {
+
+        frames.push({
+          data: frameData,
+          layout: {
+            shapes: [{
               type: 'line',
-              x0: userValue,
-              x1: userValue,
-              y0: 0,
-              y1: Math.max(...y),
+              x0: userValue, x1: userValue,
+              y0: 0, y1: yMax,
               line: { color: `rgba(255,0,0,${opacity})`, width: 3, dash: 'dot' }
-            }
-          ],
-          annotations: [
-            ...annotations,
-            {
-              ...secondaryAnnotation,
-              font: { ...secondaryAnnotation.font, color: `rgba(255,0,0,${opacity})` }
-            }
-          ]
-        };
-        frames.push({data:frameData, layout: frameLayout});
+            }],
+            annotations: [
+              ...annotations,
+              { ...secondaryAnnotation, font: { ...secondaryAnnotation.font, color: `rgba(255,0,0,${opacity})` } }
+            ]
+          }
+        });
       }
 
       const layout = {
-          title: title,
-          xaxis: {
-              title: {
-                  text: 'Percentile Score (th)',
-                  standoff: 50,
-              },
-              zeroline: false,
-              showgrid: false,
-              tickvals: [0,1,2,3,4,5,6,7,8,9,10]
-          },
-          yaxis: { 
-              title: 'Population Likelihood',
-              showticklabels: false,
-              showgrid: false
-          },
-          showlegend: false,
-          annotations: [...annotations, secondaryAnnotation],
-          shapes: [
-              {
-                  type: 'line',
-                  x0: userValue,
-                  x1: userValue,
-                  y0: 0,
-                  y1: Math.max(...y),
-                  line: { color: 'rgba(255,0,0,0)', width: 3, dash: 'dot' }
-              }
-          ],
-          margin: {
-              l: isMobile ? 15 : 80,
-              r: isMobile ? 15 : 80,
-              t: isMobile ? 80 : 100,
-              b: isMobile ? 100 : 110
-          },
-          autosize: true
+        title: title,
+        xaxis: {
+          title: { text: 'Percentile Score (th)', standoff: 50 },
+          zeroline: false,
+          showgrid: false,
+          tickvals: [0,1,2,3,4,5,6,7,8,9,10]
+        },
+        yaxis: {
+          title: 'Population Likelihood',
+          showticklabels: false,
+          showgrid: false
+        },
+        showlegend: false,
+        annotations: [...annotations, secondaryAnnotation],
+        shapes: [{
+          type: 'line',
+          x0: userValue, x1: userValue,
+          y0: 0, y1: yMax,
+          line: { color: 'rgba(255,0,0,0)', width: 3, dash: 'dot' }
+        }],
+        margin: {
+          l: isMobile ? 15 : 80,
+          r: isMobile ? 15 : 80,
+          t: isMobile ? 80 : 100,
+          b: isMobile ? 100 : 110
+        },
+        autosize: true
       };
 
       Plotly.newPlot(bellDiv, traces, layout, {
-          displayModeBar: false,
-          responsive: true
+        displayModeBar: false,
+        responsive: true
       }).then(() => {
-          Plotly.animate(bellDiv, frames, {
-              frame: {duration: 10, redraw: true},
-              transition: {duration: 0}
-          });
+        Plotly.animate(bellDiv, frames, {
+          frame: { duration: 10, redraw: true },
+          transition: { duration: 0 }
+        });
       });
 
       bellObserver.unobserve(entry.target);
     });
-  },{threshold:0.1});
+  }, { threshold: 0.1 });
 
   bellObserver.observe(bellDiv);
 }
 
-graphsData.slice(0, 2).forEach(g => {
-  renderBellCurve(g.id, g.title, g.value);
+// --- Render queue helpers ---
+const renderQueue = [];
+let isRendering = false;
+
+function enqueueRender(fn) {
+  renderQueue.push(fn);
+  pumpQueue();
+}
+
+function pumpQueue() {
+  if (isRendering) return;
+  const next = renderQueue.shift();
+  if (!next) return;
+
+  isRendering = true;
+
+  const run = () => {
+    Promise.resolve()
+      .then(next)
+      .catch(err => console.error('Graph render error:', err))
+      .finally(() => {
+        isRendering = false;
+        setTimeout(pumpQueue, 50);
+      });
+  };
+
+  if ('requestIdleCallback' in window) {
+    requestIdleCallback(run, { timeout: 500 });
+  } else {
+    setTimeout(run, 0);
+  }
+}
+
+// --- Render all graphs (queued) ---
+graphsData.forEach(g => {
+  enqueueRender(() => renderBellCurve(g.id, g.title, g.value));
 });
