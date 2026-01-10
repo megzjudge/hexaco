@@ -134,7 +134,7 @@ function renderBellCurve(containerId, title, userValue) {
       const meanIdx = x.findIndex(v => v >= mean);
       const maxStep = Math.max(meanIdx, x.length - meanIdx);
 
-      const stepIncrement = isMobile ? 13 : 18;
+      const stepIncrement = isMobile ? 10 : 18;
       const frames = [];
 
       // Cache yMax once (avoid Math.max(...y) inside loops)
