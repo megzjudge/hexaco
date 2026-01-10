@@ -129,6 +129,13 @@ section {
     background: rgba(35,0,36,1);
     border-radius: 100px;
     box-shadow: 3px 3px 10px #000000;
+    color: #fff;
+    font-size: 22px;
+    font-weight: 800;
+    line-height: 1;
+    text-decoration: none;
+    display: grid;
+    place-items: center;
 }
 
 .snap-wrap.zoomed{
