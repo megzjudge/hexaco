@@ -12,12 +12,21 @@
     --link-hover: #e8f5c8;
     --radius: 16px;
     --radius-sm: 10px;
+    --font-display: 'Arabolical', fantasy;
     --trait-honesty: #4E6E39;
     --trait-emotionality: #8C5A7E;
     --trait-extraversion: #e85d4c;
     --trait-agreeableness: #7E8C0A;
     --trait-conscientiousness: #c9a227;
     --trait-openness: #0A7E8C;
+}
+
+@font-face {
+    font-family: 'Arabolical';
+    src: url('font/Arabolical.ttf') format('truetype');
+    font-style: normal;
+    font-weight: normal;
+    font-display: swap;
 }
 
 *, *::before, *::after { box-sizing: border-box; }
@@ -80,7 +89,7 @@ body {
 }
 
 .logo {
-    font-family: 'Somebody Else', Arial, fantasy;
+    font-family: var(--font-display);
     font-size: clamp(0.82rem, 2.2vw, 1.05rem);
     line-height: 1.25;
     color: #fff;
@@ -217,9 +226,15 @@ body {
 }
 
 h1 {
+    font-family: var(--font-display);
     font-size: clamp(1.75rem, 5vw, 2.6rem);
     margin: 0 0 14px;
     line-height: 1.15;
+}
+
+h2, h3 {
+    font-family: var(--font-display);
+    font-weight: normal;
 }
 
 .hero .lead {
@@ -494,18 +509,19 @@ main {
 .language-grid {
     display: flex;
     flex-wrap: wrap;
-    gap: 8px;
+    gap: 6px;
     margin-top: 14px;
 }
 
 .lang-chip {
-    font-size: 0.72rem;
+    font-size: 0.62rem;
     font-weight: 600;
-    padding: 6px 10px;
+    padding: 4px 8px;
     border-radius: 999px;
     background: rgba(78, 110, 57, 0.12);
     border: 1px solid rgba(78, 110, 57, 0.28);
     color: rgba(255, 255, 255, 0.82);
+    line-height: 1.3;
 }
 
 /* ─── Scale library ─── */
@@ -557,7 +573,7 @@ main {
     width: 2rem;
     height: 2rem;
     border-radius: 8px;
-    font-family: 'Somebody Else', Arial, fantasy;
+    font-family: var(--font-display);
     font-size: 1.2rem;
     background: rgba(78, 110, 57, 0.2);
     color: var(--hex-accent);
@@ -620,7 +636,7 @@ main {
 .score-pill:hover { transform: translateY(-3px); border-bottom: none; color: #fff; }
 
 .score-pill__letter {
-    font-family: 'Somebody Else', Arial, fantasy;
+    font-family: var(--font-display);
     font-size: 1.5rem;
     line-height: 1;
 }
@@ -636,7 +652,7 @@ main {
 }
 
 .score-pill__value {
-    font-family: 'Somebody Else', Arial, fantasy;
+    font-family: var(--font-display);
     font-size: 1.35rem;
     letter-spacing: 0.08em;
 }
@@ -668,7 +684,7 @@ main {
 
 .hex-mark {
     margin: 0;
-    font-family: 'Somebody Else', Arial, fantasy;
+    font-family: var(--font-display);
     font-size: clamp(2.4rem, 9vw, 4.25rem);
     letter-spacing: 0.06em;
     line-height: 1;
@@ -724,7 +740,7 @@ main {
 }
 
 .trait-panel__letter {
-    font-family: 'Somebody Else', Arial, fantasy;
+    font-family: var(--font-display);
     font-size: 1.6rem;
     line-height: 1;
     opacity: 0.9;
@@ -737,14 +753,14 @@ main {
 
 .trait-panel__title {
     margin: 0;
-    font-family: 'Somebody Else', Arial, fantasy;
+    font-family: var(--font-display);
     font-size: clamp(1.2rem, 3vw, 1.55rem);
     color: #fff;
 }
 
 .trait-panel__score {
     flex-shrink: 0;
-    font-family: 'Somebody Else', Arial, fantasy;
+    font-family: var(--font-display);
     font-size: clamp(1.15rem, 2.4vw, 1.4rem);
     opacity: 0.85;
 }
@@ -788,6 +804,27 @@ main {
     height: 40px;
 }
 
+.trait-audio__links {
+    list-style: none;
+    margin: 12px 0 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    font-size: 0.82rem;
+    color: var(--text-soft);
+}
+
+.trait-audio__links a {
+    color: var(--link);
+    border-bottom: 1px solid rgba(200, 230, 160, 0.4);
+    text-decoration: none;
+}
+
+.trait-audio__links a:hover {
+    color: var(--link-hover);
+}
+
 .trait-panel__charts {
     display: flex;
     flex-direction: column;
@@ -828,7 +865,7 @@ main {
 .trait-facet-fold__summary::-webkit-details-marker { display: none; }
 
 .trait-facet-fold__score {
-    font-family: 'Somebody Else', Arial, fantasy;
+    font-family: var(--font-display);
     font-size: 1rem;
     opacity: 0.8;
     flex-shrink: 0;
@@ -905,6 +942,17 @@ main {
 .chart-card .bellCurve {
     width: 100%;
     min-height: clamp(240px, 32vw, 300px);
+}
+
+.chart-card__caption {
+    margin: 12px 4px 4px;
+    color: var(--text-soft);
+    font-size: 0.84rem;
+    line-height: 1.55;
+}
+
+.chart-card--domain .bellCurve {
+    min-height: clamp(260px, 34vw, 320px);
 }
 
 /* ─── Charts (scale library) ─── */

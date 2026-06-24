@@ -160,10 +160,19 @@ function buildScaleLibrary() {
   }
 }
 
-function buildChartCard(graph) {
+function buildChartCard(graph, captionText) {
   const card = document.createElement('article');
   card.className = 'chart-card card reveal';
-  card.innerHTML = `<div class="bellCurve" id="${graph.id}" data-title="${graph.title}" data-value="${graph.value}"></div>`;
+  if (graph.group === 'domain') card.classList.add('chart-card--domain');
+
+  const caption = captionText
+    ? `<p class="chart-card__caption">${captionText}</p>`
+    : '';
+
+  card.innerHTML = `
+    <div class="bellCurve" id="${graph.id}" data-title="${graph.title}" data-value="${graph.value}"></div>
+    ${caption}
+  `;
   return card;
 }
 
@@ -194,31 +203,6 @@ function buildTraitNotesBlock(traitId) {
 
   block.append(label, body);
   return block;
-}
-
-function buildFacetFolds(domain) {
-  const wrap = document.createElement('div');
-  wrap.className = 'trait-panel__facets';
-
-  domain.facets.forEach((facet) => {
-    const facetGraph = graphsData.find(
-      (g) => g.group === 'facet' && g.domain === domain.id && g.title.endsWith(facet.name)
-    );
-    const score = facetGraph ? `<span class="trait-facet-fold__score">${facetGraph.value}</span>` : '';
-
-    const details = document.createElement('details');
-    details.className = 'trait-facet-fold';
-    details.innerHTML = `
-      <summary class="trait-facet-fold__summary">
-        <span class="trait-facet-fold__name">${facet.name}</span>
-        ${score}
-      </summary>
-      <p class="trait-facet-fold__body">${facet.text}</p>
-    `;
-    wrap.appendChild(details);
-  });
-
-  return wrap;
 }
 
 function buildTraitResultZones() {
@@ -270,6 +254,10 @@ function buildTraitResultZones() {
         <audio controls preload="metadata" src="${trait.audio}">
           Your browser does not support audio playback.
         </audio>
+        <ul class="trait-audio__links">
+          <li>Source: <a href="https://amazon.com/Sorted-Good-Psychopaths-Guide-Bossing-ebook/dp/B00W0P9SI8/" target="_blank" rel="noopener">The Good Psychopath&rsquo;s Guide to Bossing Life ↗</a></li>
+          <li>Also recommended: <a href="https://amazon.com/Wisdom-Psychopaths-Saints-Killers-Success/dp/0374533989/" target="_blank" rel="noopener">The Wisdom of Psychopaths ↗</a></li>
+        </ul>
       `;
       panel.appendChild(audioBlock);
     }
@@ -278,17 +266,19 @@ function buildTraitResultZones() {
     charts.className = 'trait-panel__charts';
 
     const domainCard = buildChartCard(domainGraph);
-    domainCard.classList.add('chart-card--domain');
     charts.appendChild(domainCard);
 
     const facetGrid = document.createElement('div');
     facetGrid.className = 'trait-panel__facet-charts chart-grid';
-    graphsData
-      .filter((g) => g.domain === trait.id)
-      .forEach((g) => facetGrid.appendChild(buildChartCard(g)));
+    domain.facets.forEach((facet) => {
+      const facetGraph = graphsData.find(
+        (g) => g.group === 'facet' && g.domain === domain.id && g.title.endsWith(facet.name)
+      );
+      if (facetGraph) facetGrid.appendChild(buildChartCard(facetGraph, facet.text));
+    });
     charts.appendChild(facetGrid);
 
-    panel.append(charts, buildFacetFolds(domain), buildTraitNotesBlock(trait.id));
+    panel.append(charts, buildTraitNotesBlock(trait.id));
 
     container.append(intro, panel);
     zone.appendChild(container);
