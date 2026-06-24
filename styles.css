@@ -12,10 +12,10 @@
     --link-hover: #e8f5c8;
     --radius: 16px;
     --radius-sm: 10px;
-    --font-body: 'Mochesa', system-ui, sans-serif;
-    --font-hero: 'Wonderia', 'Arabolical', fantasy;
-    --font-section: 'Foglihten', 'Arabolical', fantasy;
-    --font-display: 'Arabolical', fantasy;
+    --font-body: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+    --font-hero: 'FantaisieArtistique', fantasy;
+    --font-section: 'FantaisieArtistique', fantasy;
+    --font-display: 'ThenyodiaDemo', 'FantaisieArtistique', fantasy;
     --trait-honesty: #4E6E39;
     --trait-emotionality: #8C5A7E;
     --trait-extraversion: #e85d4c;
@@ -25,18 +25,6 @@
 }
 
 @font-face { font-family: 'FantaisieArtistique'; src: url('font/FantaisieArtistique.otf') format('opentype'); font-display: swap; }
-@font-face { font-family: 'AulaneDemo'; src: url('font/AulaneDemo-q2l5q.ttf') format('truetype'); font-display: swap; }
-@font-face { font-family: 'Blackmyth'; src: url('font/Blackmyth-lx3Jw.otf') format('opentype'); font-display: swap; }
-@font-face { font-family: 'Brojack'; src: url('font/Brojack-OGWrA.ttf') format('truetype'); font-display: swap; }
-@font-face { font-family: 'CloverFieldsScript'; src: url('font/CloverFieldsScriptDemo-nApg0.ttf') format('truetype'); font-display: swap; }
-@font-face { font-family: 'CloverFieldsSerif'; src: url('font/CloverFieldsSerifDemo-1jBaB.ttf') format('truetype'); font-display: swap; }
-@font-face { font-family: 'Emira'; src: url('font/Emira-lxoWZ.ttf') format('truetype'); font-display: swap; }
-@font-face { font-family: 'Fradey'; src: url('font/Fradey-DY7rx.otf') format('opentype'); font-display: swap; }
-@font-face { font-family: 'JelvionDemo'; src: url('font/JelvionDemo-E4W2g.otf') format('opentype'); font-display: swap; }
-@font-face { font-family: 'Jesslyn'; src: url('font/Jesslyn-4nr0B.otf') format('opentype'); font-display: swap; }
-@font-face { font-family: 'Kaviera'; src: url('font/Kaviera-WpDdz.otf') format('opentype'); font-display: swap; }
-@font-face { font-family: 'NeoRomania'; src: url('font/NeoRomania-xRDlm.otf') format('opentype'); font-display: swap; }
-@font-face { font-family: 'Salgado'; src: url('font/Salgado-nApJO.otf') format('opentype'); font-display: swap; }
 @font-face { font-family: 'ThenyodiaDemo'; src: url('font/ThenyodiaDemo-aYXdJ.otf') format('opentype'); font-display: swap; }
 
 /* ─── Font preview ─── */
