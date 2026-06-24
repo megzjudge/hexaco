@@ -1,37 +1,3 @@
-const graphsData = [
-  {id:'bellCurve1', title:'Honesty-Humility', value:3.39},
-  {id:'bellCurve2', title:'Emotionality', value:2.62},
-  {id:'bellCurve3', title:'Agreeableness', value:4.28},
-  {id:'bellCurve4', title:'Conscientiousness', value:4.59},
-  {id:'bellCurve5', title:'Extraversion', value:6.66},
-  {id:'bellCurve6', title:'Openness to Experience', value:7.63},
-  {id:'bellCurve7', title:'Honesty-Humility: Sincerity', value:2.81},
-  {id:'bellCurve8', title:'Honesty-Humility: Fairness', value:3.55},
-  {id:'bellCurve9', title:'Honesty-Humility: Greed Avoidance', value:6.12},
-  {id:'bellCurve10', title:'Honesty-Humility: Modesty', value:2.6},
-  {id:'bellCurve11', title:'Emotionality: Fearfulness', value:3.42},
-  {id:'bellCurve12', title:'Emotionality: Anxiety', value:2.87},
-  {id:'bellCurve13', title:'Emotionality: Dependence', value:2.4},
-  {id:'bellCurve14', title:'Emotionality: Sentimentality', value:5.04},
-  {id:'bellCurve15', title:'Extraversion: Social Self-Esteem', value:6.74},
-  {id:'bellCurve16', title:'Extraversion: Social Boldness', value:7.29},
-  {id:'bellCurve17', title:'Extraversion: Sociability', value:5.88},
-  {id:'bellCurve18', title:'Extraversion: Liveliness', value:4.98},
-  {id:'bellCurve19', title:'Agreeableness: Forgivingness', value:4.07},
-  {id:'bellCurve20', title:'Agreeableness: Gentleness', value:3.32},
-  {id:'bellCurve21', title:'Agreeableness: Flexibility', value:6.3},
-  {id:'bellCurve22', title:'Agreeableness: Patience', value:4.24},
-  {id:'bellCurve23', title:'Conscientiousness: Organization', value:3.64},
-  {id:'bellCurve24', title:'Conscientiousness: Diligence', value:5.34},
-  {id:'bellCurve25', title:'Conscientiousness: Perfectionism', value:6.96},
-  {id:'bellCurve26', title:'Conscientiousness: Prudence', value:3.07},
-  {id:'bellCurve27', title:'Openness to Experience: Aesthetic Appreciation', value:6.71},
-  {id:'bellCurve28', title:'Openness to Experience: Inquisitiveness', value:7.09},
-  {id:'bellCurve29', title:'Openness to Experience: Creativity', value:6.65},
-  {id:'bellCurve30', title:'Openness to Experience: Unconventionality', value:7.43},
-  {id:'bellCurve31', title:'Interstitial Scale: Altruism', value:4.1}
-];
-
 function renderBellCurve(containerId, title, userValue) {
   const bellDiv = document.getElementById(containerId);
   if(!bellDiv) return;
@@ -255,7 +221,9 @@ function pumpQueue() {
   }
 }
 
-// --- Render all graphs (queued) ---
-graphsData.forEach(g => {
-  enqueueRender(() => renderBellCurve(g.id, g.title, g.value));
+document.addEventListener('DOMContentLoaded', () => {
+  if (typeof graphsData === 'undefined') return;
+  graphsData.forEach((g) => {
+    enqueueRender(() => renderBellCurve(g.id, g.title, g.value));
+  });
 });
