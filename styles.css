@@ -316,8 +316,8 @@ h2, h3 {
     display: flex;
     flex-direction: row;
     justify-content: center;
-    align-items: flex-end;
-    gap: clamp(8px, 1.2vw, 14px);
+    align-items: stretch;
+    gap: clamp(10px, 1.5vw, 16px);
     margin: 0 auto 20px;
     padding: 4px 8px;
     max-width: 100%;
@@ -328,31 +328,28 @@ h2, h3 {
     display: flex;
     flex-direction: column;
     align-items: center;
-    flex: 0 0 auto;
+    flex: 0 0 clamp(100px, 11vw, 130px);
+    text-align: center;
+}
+
+.font-test__name {
+    margin-bottom: 8px;
+    font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+    font-size: 0.58rem;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: rgba(255, 255, 255, 0.45);
+    line-height: 1.25;
 }
 
 .font-test__title {
     margin: 0;
-    writing-mode: vertical-rl;
-    text-orientation: mixed;
-    font-size: clamp(0.82rem, 1.4vw, 0.98rem);
-    line-height: 1.15;
-    letter-spacing: 0.04em;
+    font-size: clamp(0.72rem, 1.2vw, 0.88rem);
+    line-height: 1.35;
+    letter-spacing: 0.01em;
     color: #fff;
     font-weight: normal;
-}
-
-.font-test__name {
-    margin-top: 10px;
-    font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
-    font-size: 0.55rem;
-    font-weight: 600;
-    letter-spacing: 0.05em;
-    text-transform: uppercase;
-    color: rgba(255, 255, 255, 0.42);
-    text-align: center;
-    line-height: 1.25;
-    max-width: 3.5rem;
 }
 
 .font-test__title--arabolical { font-family: 'Arabolical', fantasy; }
