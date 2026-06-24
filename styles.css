@@ -15,7 +15,7 @@
     --font-body: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
     --font-hero: 'FantaisieArtistique', fantasy;
     --font-section: 'FantaisieArtistique', fantasy;
-    --font-display: 'ThenyodiaDemo', 'FantaisieArtistique', fantasy;
+    --font-display: 'FantaisieArtistique', fantasy;
     --trait-honesty: #4E6E39;
     --trait-emotionality: #8C5A7E;
     --trait-extraversion: #e85d4c;
@@ -25,7 +25,6 @@
 }
 
 @font-face { font-family: 'FantaisieArtistique'; src: url('font/FantaisieArtistique.otf') format('opentype'); font-display: swap; }
-@font-face { font-family: 'ThenyodiaDemo'; src: url('font/Thenyodia.otf') format('opentype'); font-display: swap; }
 
 /* ─── Font preview ─── */
 .font-preview {
@@ -1037,11 +1036,27 @@ main {
 
 /* ─── Footer ─── */
 .site-footer {
-    padding: 32px 0 48px;
-    text-align: center;
+    padding: 28px 0 40px;
     color: rgba(255, 255, 255, 0.45);
     font-size: 0.82rem;
     border-top: 1px solid var(--surface-border);
+}
+
+.footer-inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 12px;
+}
+
+.footer-credit { margin: 0; }
+.footer-credit strong { color: rgba(255, 255, 255, 0.7); }
+
+.footer-links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px 20px;
 }
 
 .site-footer a {
