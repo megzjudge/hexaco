@@ -38,7 +38,7 @@
 
 /* ─── Font preview ─── */
 .font-preview {
-    padding: clamp(28px, 5vh, 48px) 0;
+    padding: clamp(28px, 5vh, 48px) 0 clamp(40px, 6vh, 64px);
     background: rgba(0, 0, 0, 0.18);
     border-bottom: 1px solid var(--surface-border);
 }
@@ -46,20 +46,13 @@
 .font-preview__grid {
     display: flex;
     flex-direction: column;
-    gap: 4px;
+    gap: 32px;
 }
 
 .font-preview__row {
     display: flex;
-    align-items: baseline;
-    gap: 20px;
-    padding: 10px 14px;
-    border-radius: var(--radius-sm);
-    transition: background 0.15s;
-}
-
-.font-preview__row:hover {
-    background: rgba(78, 110, 57, 0.1);
+    flex-direction: column;
+    gap: 4px;
 }
 
 .font-preview__name {
@@ -68,16 +61,15 @@
     letter-spacing: 0.1em;
     text-transform: uppercase;
     color: var(--hex-accent);
-    width: 11rem;
-    flex-shrink: 0;
     font-family: system-ui, sans-serif;
 }
 
 .font-preview__sample {
-    font-size: clamp(1.3rem, 3.5vw, 2rem);
-    line-height: 1.2;
+    font-size: clamp(2rem, 6vw, 3.5rem);
+    line-height: 1.15;
     color: #fff;
     font-weight: normal;
+    margin: 0;
 }
 
 *, *::before, *::after { box-sizing: border-box; }
