@@ -16,15 +16,6 @@ const DOMAIN_CHART_IDS = {
   openness: 'bellCurve6',
 };
 
-const TRAIT_TITLE_FONTS = {
-  honesty: { label: 'Vins Dojo', class: 'trait-title--vinsdojo' },
-  emotionality: { label: 'Foglihten', class: 'trait-title--foglihten' },
-  extraversion: { label: 'Sirin Stencil', class: 'trait-title--sirin' },
-  agreeableness: { label: 'Vins Dojo', class: 'trait-title--vinsdojo' },
-  conscientiousness: { label: 'Sirin Stencil', class: 'trait-title--sirin' },
-  openness: { label: 'Foglihten', class: 'trait-title--foglihten' },
-};
-
 document.addEventListener('DOMContentLoaded', () => {
   initBackgroundGlows();
   buildLanguageGrid();
@@ -241,12 +232,10 @@ function buildTraitResultZones() {
 
     const head = document.createElement('header');
     head.className = 'trait-panel__head';
-    const titleFont = TRAIT_TITLE_FONTS[trait.id];
     head.innerHTML = `
       <span class="trait-panel__letter" aria-hidden="true">${trait.short}</span>
       <div class="trait-panel__titles">
-        <h2 class="trait-panel__title ${titleFont?.class || ''}">${domain.name}</h2>
-        ${titleFont ? `<span class="trait-panel__font-name">${titleFont.label}</span>` : ''}
+        <h2 class="trait-panel__title">${domain.name}</h2>
       </div>
       <span class="trait-panel__score">${domainGraph.value}</span>
     `;
