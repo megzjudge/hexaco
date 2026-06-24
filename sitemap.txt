@@ -1,6 +1,6 @@
-https://schwartz.sirenwatcher.dev
-https://schwartz.sirenwatcher.dev/hexaco.svg
-https://schwartz.sirenwatcher.dev/audio/Record_03.03.2023__043029.mp3
-https://schwartz.sirenwatcher.dev/images/20230716_0108_2_300x300.png
-https://schwartz.sirenwatcher.dev/images/Hexaco_Results_Download.png
-https://schwartz.sirenwatcher.dev/images/Hexaco_Results.png
+https://hexaco.jdge.cc
+https://hexaco.jdge.cc/hexaco.svg
+https://hexaco.jdge.cc/images/hexaco_thumbnail.jpg
+https://hexaco.jdge.cc/images/Hexaco_Results.png
+https://hexaco.jdge.cc/images/Hexaco_Results_Download.png
+https://hexaco.jdge.cc/audio/Record_03.03.2023__043029.mp3
