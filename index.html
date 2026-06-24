@@ -29,6 +29,7 @@
 <script src="https://cdn.plot.ly/plotly-2.30.0.min.js"></script>
 <script src="scale-content.js"></script>
 <script src="data.js"></script>
+<script src="trait-notes.js"></script>
 <script src="layout.js" defer></script>
 <script src="script.js" defer></script>
 </head>
@@ -43,6 +44,7 @@
                 <a href="#about" class="nav-link">About</a>
                 <a href="https://hexaco.org/" class="nav-link" target="_blank" rel="noopener">Take the Test ↗</a>
                 <a href="#results" class="nav-link">Results</a>
+                <a href="#honesty" class="nav-link">Traits</a>
                 <a href="#scales" class="nav-link">Scales</a>
             </nav>
         </div>
@@ -65,12 +67,12 @@
                     <a href="#results" class="btn btn-secondary">Explore My Results</a>
                 </div>
                 <nav class="hex-chips" aria-label="Jump to domains">
-                    <a href="#scale-honesty" class="hex-chip hex-chip--honesty">H · Honesty-Humility</a>
-                    <a href="#scale-emotionality" class="hex-chip hex-chip--emotionality">E · Emotionality</a>
-                    <a href="#scale-extraversion" class="hex-chip hex-chip--extraversion">X · eXtraversion</a>
-                    <a href="#scale-agreeableness" class="hex-chip hex-chip--agreeableness">A · Agreeableness</a>
-                    <a href="#scale-conscientiousness" class="hex-chip hex-chip--conscientiousness">C · Conscientiousness</a>
-                    <a href="#scale-openness" class="hex-chip hex-chip--openness">O · Openness</a>
+                    <a href="#honesty" class="hex-chip hex-chip--honesty">H · Honesty-Humility</a>
+                    <a href="#emotionality" class="hex-chip hex-chip--emotionality">E · Emotionality</a>
+                    <a href="#extraversion" class="hex-chip hex-chip--extraversion">X · eXtraversion</a>
+                    <a href="#agreeableness" class="hex-chip hex-chip--agreeableness">A · Agreeableness</a>
+                    <a href="#conscientiousness" class="hex-chip hex-chip--conscientiousness">C · Conscientiousness</a>
+                    <a href="#openness" class="hex-chip hex-chip--openness">O · Openness</a>
                 </nav>
             </div>
         </section>
@@ -89,9 +91,9 @@
                     <article class="about-panel about-panel--model card reveal">
                         <header class="about-panel__head">
                             <span class="about-panel__tag">The model</span>
-                            <h3>Six domains, 24 facets, one interstitial scale</h3>
+                            <h3>6 domains, 24 facets, 1 interstitial scale</h3>
                         </header>
-                        <p class="about-panel__text">The <strong>HEXACO</strong> model adds <strong>Honesty-Humility</strong> to the familiar Big Five structure, splits Agreeableness into cooperation versus anger, and reframes Neuroticism as <strong>Emotionality</strong>. Each of the six factors has four facet-level scales; a 25th interstitial facet, <strong>Altruism (versus Antagonism)</strong>, cuts across Honesty-Humility, Emotionality, and Agreeableness.</p>
+                        <p class="about-panel__text">The <strong>HEXACO</strong> model adds <strong>Honesty-Humility</strong> to the familiar Big Five structure, splits Agreeableness into cooperation versus anger, and reframes Neuroticism as <strong>Emotionality</strong>. Each of the six factors has four facet-level scales (24 traits) and a 25th interstitial facet, <strong>Altruism (versus Antagonism)</strong>, which cuts across Honesty-Humility, Emotionality, and Agreeableness.</p>
                     </article>
 
                     <div class="about-stage__row">
@@ -188,20 +190,7 @@
 
                 <div class="score-overview" id="score-overview" aria-label="Domain score summary"></div>
 
-                <div class="results-block reveal">
-                    <h3 class="results-block__title">Six primary factors</h3>
-                    <div class="chart-grid chart-grid--domains" id="domain-charts"></div>
-                </div>
-
-                <div class="results-block reveal">
-                    <h3 class="results-block__title">Facet-level scales</h3>
-                    <div id="facet-charts"></div>
-                </div>
-
-                <div class="results-block reveal">
-                    <h3 class="results-block__title">Interstitial scale</h3>
-                    <div class="chart-grid" id="interstitial-charts"></div>
-                </div>
+                <div id="trait-results" class="trait-stream" aria-label="Trait results and descriptions"></div>
 
                 <figure class="results-figure reveal">
                     <div class="results-figure__frame">

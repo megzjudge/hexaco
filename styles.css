@@ -648,52 +648,266 @@ main {
 .score-pill--conscientiousness { background: rgba(201, 162, 39, 0.12); border-color: rgba(201, 162, 39, 0.3); }
 .score-pill--openness { background: rgba(10, 126, 140, 0.12); border-color: rgba(10, 126, 140, 0.3); }
 
-/* ─── Charts ─── */
-.results-block { margin-bottom: clamp(32px, 5vh, 48px); }
+/* ─── Trait result zones ─── */
+.trait-stream {
+    display: flex;
+    flex-direction: column;
+    gap: clamp(8px, 2vh, 16px);
+    margin-top: clamp(28px, 4vh, 40px);
+}
 
-.results-block__title {
-    font-size: 1.05rem;
-    margin: 0 0 16px;
+.flow-zone--trait {
+    padding: clamp(36px, 7vh, 64px) 0;
+    scroll-margin-top: 72px;
+}
+
+.trait-zone__intro {
     text-align: center;
-    color: var(--text-soft);
-    font-weight: 600;
+    margin-bottom: clamp(16px, 2.5vh, 24px);
 }
 
-.chart-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(min(100%, 280px), 1fr));
-    gap: clamp(14px, 2.5vw, 20px);
+.hex-mark {
+    margin: 0;
+    font-family: 'Somebody Else', Arial, fantasy;
+    font-size: clamp(2.4rem, 9vw, 4.25rem);
+    letter-spacing: 0.06em;
+    line-height: 1;
+    text-transform: lowercase;
 }
 
-.chart-grid--domains {
-    grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr));
+.hex-mark__hi {
+    font-size: 1.22em;
+    color: #fff;
+    text-transform: uppercase;
 }
 
-.chart-card {
-    padding: 12px;
+.hex-mark__lo {
+    opacity: 0.28;
+    font-size: 0.92em;
+}
+
+.trait-zone--honesty { background: linear-gradient(180deg, rgba(78, 110, 57, 0.1), transparent 72%); }
+.trait-zone--honesty .hex-mark__hi { color: var(--trait-honesty); }
+
+.trait-zone--emotionality { background: linear-gradient(180deg, rgba(140, 90, 126, 0.08), transparent 72%); }
+.trait-zone--emotionality .hex-mark__hi { color: var(--trait-emotionality); }
+
+.trait-zone--extraversion { background: linear-gradient(180deg, rgba(232, 93, 76, 0.08), transparent 72%); }
+.trait-zone--extraversion .hex-mark__hi { color: var(--trait-extraversion); }
+
+.trait-zone--agreeableness { background: linear-gradient(180deg, rgba(126, 140, 10, 0.07), transparent 72%); }
+.trait-zone--agreeableness .hex-mark__hi { color: var(--trait-agreeableness); }
+
+.trait-zone--conscientiousness { background: linear-gradient(180deg, rgba(201, 162, 39, 0.07), transparent 72%); }
+.trait-zone--conscientiousness .hex-mark__hi { color: var(--trait-conscientiousness); }
+
+.trait-zone--openness { background: linear-gradient(180deg, rgba(10, 126, 140, 0.08), transparent 72%); }
+.trait-zone--openness .hex-mark__hi { color: var(--trait-openness); }
+
+.trait-zone--altruism { background: linear-gradient(180deg, rgba(78, 110, 57, 0.05), transparent 72%); }
+
+.trait-panel {
+    border-radius: calc(var(--radius) + 4px);
+    overflow: hidden;
+    border: 1px solid var(--surface-border);
+    background: rgba(0, 0, 0, 0.2);
     scroll-margin-top: 80px;
 }
 
-.chart-card .bellCurve {
-    width: 100%;
-    min-height: 280px;
+.trait-panel__head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    padding: 20px clamp(20px, 3vw, 28px);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.06);
 }
 
-.facet-group {
-    margin-bottom: clamp(28px, 4vh, 40px);
+.trait-panel__letter {
+    font-family: 'Somebody Else', Arial, fantasy;
+    font-size: 1.6rem;
+    line-height: 1;
+    opacity: 0.9;
 }
 
-.facet-group__title {
-    font-size: 0.85rem;
+.trait-panel__titles {
+    flex: 1;
+    min-width: 0;
+}
+
+.trait-panel__title {
+    margin: 0;
+    font-family: 'Somebody Else', Arial, fantasy;
+    font-size: clamp(1.2rem, 3vw, 1.55rem);
+    color: #fff;
+}
+
+.trait-panel__score {
+    flex-shrink: 0;
+    font-family: 'Somebody Else', Arial, fantasy;
+    font-size: clamp(1.15rem, 2.4vw, 1.4rem);
+    opacity: 0.85;
+}
+
+.trait-panel--honesty .trait-panel__head { background: linear-gradient(90deg, rgba(78, 110, 57, 0.22), transparent); }
+.trait-panel--emotionality .trait-panel__head { background: linear-gradient(90deg, rgba(140, 90, 126, 0.2), transparent); }
+.trait-panel--extraversion .trait-panel__head { background: linear-gradient(90deg, rgba(232, 93, 76, 0.2), transparent); }
+.trait-panel--agreeableness .trait-panel__head { background: linear-gradient(90deg, rgba(126, 140, 10, 0.2), transparent); }
+.trait-panel--conscientiousness .trait-panel__head { background: linear-gradient(90deg, rgba(201, 162, 39, 0.2), transparent); }
+.trait-panel--openness .trait-panel__head { background: linear-gradient(90deg, rgba(10, 126, 140, 0.22), transparent); }
+.trait-panel--altruism .trait-panel__head { background: linear-gradient(90deg, rgba(78, 110, 57, 0.15), transparent); }
+
+.trait-panel__description {
+    margin: 20px;
+    box-shadow: none;
+}
+
+.trait-panel__description p {
+    margin: 0;
+    color: var(--text-soft);
+    font-size: 0.92rem;
+    line-height: 1.6;
+}
+
+.trait-panel__audio {
+    margin: 0 20px 20px;
+    box-shadow: none;
+}
+
+.trait-audio__label {
+    margin: 0 0 10px;
+    font-size: 0.78rem;
     font-weight: 700;
     letter-spacing: 0.1em;
     text-transform: uppercase;
     color: var(--hex-accent);
-    margin: 0 0 14px;
-    text-align: center;
 }
 
-/* ─── Results figure ─── */
+.trait-panel__audio audio {
+    width: 100%;
+    height: 40px;
+}
+
+.trait-panel__charts {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    padding: 0 20px 20px;
+}
+
+.trait-panel__facet-charts {
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 260px), 1fr));
+}
+
+.trait-panel__facets {
+    padding: 4px 20px 24px;
+    border-top: 1px solid rgba(255, 255, 255, 0.06);
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.trait-facet-fold {
+    border-radius: var(--radius-sm);
+    background: rgba(0, 0, 0, 0.18);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.trait-facet-fold__summary {
+    cursor: pointer;
+    list-style: none;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 12px 16px;
+    font-weight: 600;
+    font-size: 0.88rem;
+}
+
+.trait-facet-fold__summary::-webkit-details-marker { display: none; }
+
+.trait-facet-fold__score {
+    font-family: 'Somebody Else', Arial, fantasy;
+    font-size: 1rem;
+    opacity: 0.8;
+    flex-shrink: 0;
+}
+
+.trait-facet-fold__body {
+    margin: 0;
+    padding: 0 16px 14px;
+    color: var(--text-soft);
+    font-size: 0.86rem;
+    line-height: 1.55;
+}
+
+.trait-panel__notes {
+    margin: 0 20px 24px;
+    box-shadow: none;
+    border-style: dashed;
+    border-color: rgba(78, 110, 57, 0.35);
+    background: rgba(78, 110, 57, 0.06);
+}
+
+.trait-panel__notes--empty {
+    border-color: rgba(255, 255, 255, 0.12);
+    background: rgba(0, 0, 0, 0.12);
+}
+
+.trait-notes__label {
+    margin: 0 0 12px;
+    font-size: 0.78rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--hex-accent);
+}
+
+.trait-notes__body {
+    color: var(--text-soft);
+    font-size: 0.92rem;
+    line-height: 1.65;
+}
+
+.trait-notes__body p {
+    margin: 0 0 0.75em;
+}
+
+.trait-notes__body p:last-child {
+    margin-bottom: 0;
+}
+
+.trait-notes__body ul,
+.trait-notes__body ol {
+    margin: 0 0 0.75em;
+    padding-left: 1.25em;
+}
+
+.trait-notes__placeholder {
+    margin: 0;
+    font-size: 0.86rem;
+    color: rgba(255, 255, 255, 0.45);
+    font-style: italic;
+}
+
+.trait-notes__placeholder code {
+    font-size: 0.82em;
+    color: rgba(200, 230, 160, 0.85);
+}
+
+.chart-card {
+    box-shadow: none;
+    background: rgba(0, 0, 0, 0.25);
+    padding: 12px;
+}
+
+.chart-card .bellCurve {
+    width: 100%;
+    min-height: clamp(240px, 32vw, 300px);
+}
+
+/* ─── Charts (scale library) ─── */
 .results-figure {
     margin-top: clamp(32px, 5vh, 48px);
     text-align: center;

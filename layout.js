@@ -1,5 +1,5 @@
 const HEX_TRAITS = [
-  { id: 'honesty', label: 'Honesty-Humility', short: 'H' },
+  { id: 'honesty', label: 'Honesty-Humility', short: 'H', audio: 'audio/Record_03.03.2023__043029.mp3' },
   { id: 'emotionality', label: 'Emotionality', short: 'E' },
   { id: 'extraversion', label: 'eXtraversion', short: 'X' },
   { id: 'agreeableness', label: 'Agreeableness', short: 'A' },
@@ -7,11 +7,20 @@ const HEX_TRAITS = [
   { id: 'openness', label: 'Openness', short: 'O' },
 ];
 
+const DOMAIN_CHART_IDS = {
+  honesty: 'bellCurve1',
+  emotionality: 'bellCurve2',
+  extraversion: 'bellCurve5',
+  agreeableness: 'bellCurve3',
+  conscientiousness: 'bellCurve4',
+  openness: 'bellCurve6',
+};
+
 document.addEventListener('DOMContentLoaded', () => {
   initBackgroundGlows();
   buildLanguageGrid();
   buildScaleLibrary();
-  buildResultsSections();
+  buildTraitResultZones();
   buildScoreOverview();
   initReveal();
 });
@@ -20,21 +29,12 @@ function buildScoreOverview() {
   const mount = document.getElementById('score-overview');
   if (!mount || typeof graphsData === 'undefined') return;
 
-  const domainIdMap = {
-    honesty: 'bellCurve1',
-    emotionality: 'bellCurve2',
-    extraversion: 'bellCurve5',
-    agreeableness: 'bellCurve3',
-    conscientiousness: 'bellCurve4',
-    openness: 'bellCurve6',
-  };
-
   HEX_TRAITS.forEach((trait) => {
-    const graph = graphsData.find((g) => g.id === domainIdMap[trait.id]);
+    const graph = graphsData.find((g) => g.id === DOMAIN_CHART_IDS[trait.id]);
     if (!graph) return;
 
     const card = document.createElement('a');
-    card.href = `#domain-${trait.id}`;
+    card.href = `#${trait.id}`;
     card.className = `score-pill score-pill--${trait.id} reveal`;
     card.innerHTML = `
       <span class="score-pill__letter">${trait.short}</span>
@@ -79,7 +79,7 @@ function initBackgroundGlows() {
 }
 
 function initReveal() {
-  const els = document.querySelectorAll('.reveal, .card, .flow-zone, .about-panel, .scale-fold, .chart-card');
+  const els = document.querySelectorAll('.reveal, .card, .flow-zone, .about-panel, .scale-fold, .chart-card, .trait-panel, .trait-zone');
   const io = new IntersectionObserver(
     (entries) => {
       entries.forEach((e) => {
@@ -160,67 +160,173 @@ function buildScaleLibrary() {
   }
 }
 
-function buildChartCard(graph, anchorId) {
+function buildChartCard(graph) {
   const card = document.createElement('article');
   card.className = 'chart-card card reveal';
-  if (anchorId) card.id = anchorId;
   card.innerHTML = `<div class="bellCurve" id="${graph.id}" data-title="${graph.title}" data-value="${graph.value}"></div>`;
   return card;
 }
 
-function buildResultsSections() {
-  if (typeof graphsData === 'undefined') return;
-
-  const domainMount = document.getElementById('domain-charts');
-  const facetMount = document.getElementById('facet-charts');
-  const interstitialMount = document.getElementById('interstitial-charts');
-  if (!domainMount) return;
-
-  const domainOrder = ['honesty', 'emotionality', 'extraversion', 'agreeableness', 'conscientiousness', 'openness'];
-  const domainIdMap = {
-    honesty: 'bellCurve1',
-    emotionality: 'bellCurve2',
-    extraversion: 'bellCurve5',
-    agreeableness: 'bellCurve3',
-    conscientiousness: 'bellCurve4',
-    openness: 'bellCurve6',
-  };
-
-  domainOrder.forEach((domainId) => {
-    const graph = graphsData.find((g) => g.id === domainIdMap[domainId]);
-    if (graph) domainMount.appendChild(buildChartCard(graph, `domain-${domainId}`));
-  });
-
-  if (facetMount) {
-    domainOrder.forEach((domainId) => {
-      const section = document.createElement('div');
-      section.className = `facet-group facet-group--${domainId}`;
-      const label = HEXACO_DOMAINS?.find((d) => d.id === domainId);
-      if (label) {
-        const head = document.createElement('h3');
-        head.className = 'facet-group__title';
-        head.textContent = label.name;
-        section.appendChild(head);
-      }
-
-      const grid = document.createElement('div');
-      grid.className = 'chart-grid';
-      graphsData
-        .filter((g) => g.domain === domainId)
-        .forEach((g) => grid.appendChild(buildChartCard(g)));
-      section.appendChild(grid);
-      facetMount.appendChild(section);
-    });
-  }
-
-  if (interstitialMount) {
-    const altruism = graphsData.find((g) => g.group === 'interstitial');
-    if (altruism) interstitialMount.appendChild(buildChartCard(altruism));
-  }
+function buildHexMark(traitId) {
+  const mark = HEX_MARKS[traitId];
+  if (!mark) return '';
+  return `<p class="hex-mark hex-mark--${traitId}" aria-hidden="true"><span class="hex-mark__lo">${mark.before}</span><span class="hex-mark__hi">${mark.letter}</span><span class="hex-mark__lo">${mark.after}</span></p>`;
 }
 
-function buildOceanMark(letter, before, after) {
-  return `<p class="hex-mark hex-mark--${letter.toLowerCase()}" aria-hidden="true"><span class="hex-mark__lo">${before}</span><span class="hex-mark__hi">${letter}</span><span class="hex-mark__lo">${after}</span></p>`;
+function buildTraitNotesBlock(traitId) {
+  const block = document.createElement('div');
+  block.className = 'trait-panel__notes card';
+  const raw = typeof TRAIT_NOTES !== 'undefined' ? (TRAIT_NOTES[traitId] || '').trim() : '';
+
+  const label = document.createElement('p');
+  label.className = 'trait-notes__label';
+  label.textContent = 'My read on these results';
+
+  const body = document.createElement('div');
+  body.className = 'trait-notes__body';
+
+  if (raw) {
+    body.innerHTML = raw;
+  } else {
+    block.classList.add('trait-panel__notes--empty');
+    body.innerHTML = `<p class="trait-notes__placeholder">Add your explanation in <code>trait-notes.js</code> under <strong>${traitId}</strong>.</p>`;
+  }
+
+  block.append(label, body);
+  return block;
+}
+
+function buildFacetFolds(domain) {
+  const wrap = document.createElement('div');
+  wrap.className = 'trait-panel__facets';
+
+  domain.facets.forEach((facet) => {
+    const facetGraph = graphsData.find(
+      (g) => g.group === 'facet' && g.domain === domain.id && g.title.endsWith(facet.name)
+    );
+    const score = facetGraph ? `<span class="trait-facet-fold__score">${facetGraph.value}</span>` : '';
+
+    const details = document.createElement('details');
+    details.className = 'trait-facet-fold';
+    details.innerHTML = `
+      <summary class="trait-facet-fold__summary">
+        <span class="trait-facet-fold__name">${facet.name}</span>
+        ${score}
+      </summary>
+      <p class="trait-facet-fold__body">${facet.text}</p>
+    `;
+    wrap.appendChild(details);
+  });
+
+  return wrap;
+}
+
+function buildTraitResultZones() {
+  if (typeof graphsData === 'undefined' || typeof HEXACO_DOMAINS === 'undefined') return;
+
+  const mount = document.getElementById('trait-results');
+  if (!mount) return;
+
+  HEX_TRAITS.forEach((trait) => {
+    const domain = HEXACO_DOMAINS.find((d) => d.id === trait.id);
+    const domainGraph = graphsData.find((g) => g.id === DOMAIN_CHART_IDS[trait.id]);
+    if (!domain || !domainGraph) return;
+
+    const zone = document.createElement('section');
+    zone.className = `flow-zone flow-zone--trait trait-zone trait-zone--${trait.id}`;
+    zone.id = trait.id;
+
+    const container = document.createElement('div');
+    container.className = 'container';
+
+    const intro = document.createElement('header');
+    intro.className = 'trait-zone__intro reveal';
+    intro.innerHTML = buildHexMark(trait.id);
+
+    const panel = document.createElement('article');
+    panel.className = `trait-panel trait-panel--${trait.id} reveal`;
+
+    const head = document.createElement('header');
+    head.className = 'trait-panel__head';
+    head.innerHTML = `
+      <span class="trait-panel__letter" aria-hidden="true">${trait.short}</span>
+      <div class="trait-panel__titles">
+        <h2 class="trait-panel__title">${domain.name}</h2>
+      </div>
+      <span class="trait-panel__score">${domainGraph.value}</span>
+    `;
+
+    const description = document.createElement('div');
+    description.className = 'trait-panel__description card';
+    description.innerHTML = `<p>${domain.description}</p>`;
+
+    panel.append(head, description);
+
+    if (trait.audio) {
+      const audioBlock = document.createElement('div');
+      audioBlock.className = 'trait-panel__audio card';
+      audioBlock.innerHTML = `
+        <p class="trait-audio__label">Listen — reflection on ${domain.name}</p>
+        <audio controls preload="metadata" src="${trait.audio}">
+          Your browser does not support audio playback.
+        </audio>
+      `;
+      panel.appendChild(audioBlock);
+    }
+
+    const charts = document.createElement('div');
+    charts.className = 'trait-panel__charts';
+
+    const domainCard = buildChartCard(domainGraph);
+    domainCard.classList.add('chart-card--domain');
+    charts.appendChild(domainCard);
+
+    const facetGrid = document.createElement('div');
+    facetGrid.className = 'trait-panel__facet-charts chart-grid';
+    graphsData
+      .filter((g) => g.domain === trait.id)
+      .forEach((g) => facetGrid.appendChild(buildChartCard(g)));
+    charts.appendChild(facetGrid);
+
+    panel.append(charts, buildFacetFolds(domain), buildTraitNotesBlock(trait.id));
+
+    container.append(intro, panel);
+    zone.appendChild(container);
+    mount.appendChild(zone);
+  });
+
+  const altruismGraph = graphsData.find((g) => g.group === 'interstitial');
+  if (altruismGraph && typeof HEXACO_ALTRUISM !== 'undefined') {
+    const zone = document.createElement('section');
+    zone.className = 'flow-zone flow-zone--trait trait-zone trait-zone--altruism';
+    zone.id = 'altruism';
+
+    const container = document.createElement('div');
+    container.className = 'container';
+
+    const panel = document.createElement('article');
+    panel.className = 'trait-panel trait-panel--altruism reveal';
+    panel.innerHTML = `
+      <header class="trait-panel__head">
+        <span class="trait-panel__letter" aria-hidden="true">+</span>
+        <div class="trait-panel__titles">
+          <h2 class="trait-panel__title">${HEXACO_ALTRUISM.name}</h2>
+        </div>
+        <span class="trait-panel__score">${altruismGraph.value}</span>
+      </header>
+      <div class="trait-panel__description card"><p>${HEXACO_ALTRUISM.text}</p></div>
+    `;
+
+    const charts = document.createElement('div');
+    charts.className = 'trait-panel__charts';
+    charts.appendChild(buildChartCard(altruismGraph));
+    panel.appendChild(charts);
+    panel.appendChild(buildTraitNotesBlock('altruism'));
+
+    container.appendChild(panel);
+    zone.appendChild(container);
+    mount.appendChild(zone);
+  }
 }
 
 const HEX_MARKS = {
@@ -232,5 +338,5 @@ const HEX_MARKS = {
   openness: { before: 'hexac', letter: 'O', after: '' },
 };
 
-window.buildOceanMark = buildOceanMark;
+window.buildHexMark = buildHexMark;
 window.HEX_MARKS = HEX_MARKS;
