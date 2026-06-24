@@ -24,64 +24,66 @@
 @font-face {
     font-family: 'Arabolical';
     src: url('font/Arabolical.ttf') format('truetype');
-    font-style: normal;
-    font-weight: normal;
     font-display: swap;
 }
 
 @font-face {
-    font-family: 'Foglihten';
-    src: url('font/FoglihtenNo07.otf') format('opentype');
-    font-style: normal;
-    font-weight: normal;
-    font-display: swap;
-}
-
-@font-face {
-    font-family: 'Mochesa';
-    src: url('font/Mochesa.otf') format('opentype');
-    font-style: normal;
-    font-weight: normal;
-    font-display: swap;
-}
-
-@font-face {
-    font-family: 'Wonderia';
-    src: url('font/Wonderia.otf') format('opentype');
-    font-style: normal;
-    font-weight: normal;
+    font-family: 'F1';
+    src: url('font/f1.otf') format('opentype');
     font-display: swap;
 }
 
 @font-face {
     font-family: 'Fantaisie Artistique';
     src: url('font/FantaisieArtistique.otf') format('opentype');
-    font-style: normal;
-    font-weight: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Foglihten';
+    src: url('font/FoglihtenNo07.otf') format('opentype');
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Mochesa';
+    src: url('font/Mochesa.otf') format('opentype');
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Script Alt';
+    src: url('font/SCRIPALT.ttf') format('truetype');
     font-display: swap;
 }
 
 @font-face {
     font-family: 'Sirin Stencil';
     src: url('font/SirinStencil-Regular.ttf') format('truetype');
-    font-style: normal;
-    font-weight: normal;
     font-display: swap;
 }
 
 @font-face {
     font-family: 'Strato';
     src: url('font/Strato-linked.otf') format('opentype');
-    font-style: normal;
-    font-weight: normal;
     font-display: swap;
 }
 
 @font-face {
     font-family: 'Vins Dojo';
     src: url('font/vinsdojo.TTF') format('truetype');
-    font-style: normal;
-    font-weight: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Wonderia';
+    src: url('font/Wonderia.otf') format('opentype');
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Zhivilia';
+    src: url('font/zhivilia.ttf') format('truetype');
     font-display: swap;
 }
 
@@ -312,54 +314,41 @@ h2, h3 {
     border: 0;
 }
 
-.font-test {
+.hero-fonts {
     display: flex;
     flex-direction: row;
-    justify-content: center;
-    align-items: stretch;
-    gap: clamp(10px, 1.5vw, 16px);
-    margin: 0 auto 20px;
-    padding: 4px 8px;
-    max-width: 100%;
+    flex-wrap: nowrap;
+    justify-content: flex-start;
+    align-items: flex-start;
+    gap: clamp(20px, 3vw, 36px);
+    width: 100%;
+    margin: 0 0 24px;
+    padding: 0 8px 12px;
     overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
 }
 
-.font-test__col {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    flex: 0 0 clamp(100px, 11vw, 130px);
-    text-align: center;
-}
-
-.font-test__name {
-    margin-bottom: 8px;
-    font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
-    font-size: 0.58rem;
-    font-weight: 600;
-    letter-spacing: 0.04em;
-    text-transform: uppercase;
-    color: rgba(255, 255, 255, 0.45);
-    line-height: 1.25;
-}
-
-.font-test__title {
+.hero-font {
+    flex: 0 0 auto;
     margin: 0;
-    font-size: clamp(0.72rem, 1.2vw, 0.88rem);
-    line-height: 1.35;
-    letter-spacing: 0.01em;
-    color: #fff;
+    font-size: clamp(1.5rem, 3vw, 2.25rem);
+    line-height: 1.15;
     font-weight: normal;
+    color: #fff;
+    white-space: nowrap;
 }
 
-.font-test__title--arabolical { font-family: 'Arabolical', fantasy; }
-.font-test__title--fantaisie { font-family: 'Fantaisie Artistique', fantasy; }
-.font-test__title--foglihten { font-family: 'Foglihten', fantasy; }
-.font-test__title--mochesa { font-family: 'Mochesa', sans-serif; }
-.font-test__title--wonderia { font-family: 'Wonderia', fantasy; }
-.font-test__title--sirin { font-family: 'Sirin Stencil', fantasy; }
-.font-test__title--strato { font-family: 'Strato', sans-serif; }
-.font-test__title--vinsdojo { font-family: 'Vins Dojo', fantasy; }
+.hero-font[data-font="1"] { font-family: 'Arabolical', fantasy; }
+.hero-font[data-font="2"] { font-family: 'F1', fantasy; }
+.hero-font[data-font="3"] { font-family: 'Fantaisie Artistique', fantasy; }
+.hero-font[data-font="4"] { font-family: 'Foglihten', fantasy; }
+.hero-font[data-font="5"] { font-family: 'Mochesa', sans-serif; }
+.hero-font[data-font="6"] { font-family: 'Script Alt', cursive; }
+.hero-font[data-font="7"] { font-family: 'Sirin Stencil', fantasy; }
+.hero-font[data-font="8"] { font-family: 'Strato', sans-serif; }
+.hero-font[data-font="9"] { font-family: 'Vins Dojo', fantasy; }
+.hero-font[data-font="10"] { font-family: 'Wonderia', fantasy; }
+.hero-font[data-font="11"] { font-family: 'Zhivilia', fantasy; }
 
 .hero-actions {
     display: flex;
