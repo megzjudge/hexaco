@@ -818,12 +818,9 @@ main {
     text-transform: uppercase;
 }
 
-.trait-title--arabolical { font-family: 'Arabolical', fantasy; }
 .trait-title--foglihten { font-family: 'Foglihten', fantasy; }
-.trait-title--mochesa { font-family: 'Mochesa', sans-serif; }
-.trait-title--wonderia { font-family: 'Wonderia', fantasy; }
 .trait-title--sirin { font-family: 'Sirin Stencil', fantasy; }
-.trait-title--strato { font-family: 'Strato', sans-serif; }
+.trait-title--vinsdojo { font-family: 'Vins Dojo', fantasy; }
 
 .trait-panel__score {
     flex-shrink: 0;

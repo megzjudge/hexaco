@@ -17,12 +17,12 @@ const DOMAIN_CHART_IDS = {
 };
 
 const TRAIT_TITLE_FONTS = {
-  honesty: { label: 'Arabolical', class: 'trait-title--arabolical' },
+  honesty: { label: 'Vins Dojo', class: 'trait-title--vinsdojo' },
   emotionality: { label: 'Foglihten', class: 'trait-title--foglihten' },
-  extraversion: { label: 'Mochesa', class: 'trait-title--mochesa' },
-  agreeableness: { label: 'Wonderia', class: 'trait-title--wonderia' },
+  extraversion: { label: 'Sirin Stencil', class: 'trait-title--sirin' },
+  agreeableness: { label: 'Vins Dojo', class: 'trait-title--vinsdojo' },
   conscientiousness: { label: 'Sirin Stencil', class: 'trait-title--sirin' },
-  openness: { label: 'Strato', class: 'trait-title--strato' },
+  openness: { label: 'Foglihten', class: 'trait-title--foglihten' },
 };
 
 document.addEventListener('DOMContentLoaded', () => {
