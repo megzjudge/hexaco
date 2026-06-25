@@ -892,6 +892,12 @@ main {
     line-height: 1.5;
 }
 
+.trait-study__entry + .trait-study__entry {
+    margin-top: 18px;
+    padding-top: 18px;
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+}
+
 .trait-study__title a {
     color: var(--link);
     border-bottom: 1px solid rgba(200, 230, 160, 0.4);
