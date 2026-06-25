@@ -1229,6 +1229,17 @@ a { color: var(--link); }
 a:hover { color: var(--link-hover); }
 
 @media (max-width: 600px) {
+    .nav {
+        display: grid;
+        grid-template-columns: auto auto;
+        justify-content: end;
+        justify-items: end;
+        gap: 8px 16px;
+    }
     .nav-link { font-size: 0.72rem; }
     .chart-card .bellCurve { min-height: 240px; }
+
+    /* About lead flows as one sentence instead of two stacked lines */
+    #about .zone-lead--stacked { display: block; }
+    #about .zone-lead__line { display: inline; }
 }
