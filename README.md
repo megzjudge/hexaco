@@ -26,7 +26,6 @@ This site takes one person's scores and renders each domain and facet against a 
 
 - Plain **HTML / CSS / JavaScript** — no framework, no bundler.
 - **[Plotly.js](https://plotly.com/javascript/)** (via CDN) for the bell curves.
-- Deployed on **Cloudflare Pages**.
 
 ## Project structure
 
@@ -58,8 +57,7 @@ Pushing to the connected branch triggers a **Cloudflare Pages** deploy. There's 
 
 - The **HEXACO Personality Inventory** was developed by **Kibeom Lee** and **Michael C. Ashton**. Scale descriptions are reproduced from the official materials at [hexaco.org](https://hexaco.org/) (University of Calgary).
 - Bell curves rendered with **Plotly.js**.
-- Site by **Megan Judge**.
 
 ## License
 
-This is a personal project. The HEXACO scale text and any referenced study material remain the property of their respective authors and are included here for personal, non-commercial reference. If you'd like to reuse the site's own code, add a license file (e.g. MIT) or get in touch.
+This is a personal project. The HEXACO scale text and any referenced study material remain the property of their respective authors and are included here for personal, non-commercial reference.
