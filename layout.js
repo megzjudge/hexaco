@@ -22,6 +22,15 @@ const HEX_TRAITS = [
           'images/Honesty-Humility_is_to_Politeness_as_Agreeableness_is_to_Agreeableness_A_Reanalysis_of_Blotner.png',
         ],
       },
+      {
+        url: 'https://armlab.org/pdfs/papers/2021%20-%20Kay%20-%20Negative%20traits,%20positive%20assortment%20Revisiting%20the%20Dark%20Triad%20and%20a%20preference%20for%20similar%20others.pdf,
+        title:
+          'Negative traits, positive assortment: Revisiting the Dark Triad and a preference for similar others',
+        images: [
+          'images/Negative_traits_positive_assortment_Revisiting_the_Dark_Triad_and_a_preference_for_similar_others.png',
+          'images/Negative_traits_positive_assortment_Revisiting_the_Dark_Triad_and_a_preference_for_similar_others_2.png',
+        ],
+      },
     ],
     note: `
       <p>Whilst I probably agree that Honesty-Humility is just, as studies suggest, data already picked up by Politeness in the Big Five (10) model - the fact that I diverge on one out of four of the Honesty-Humility subtraits implies to me that possibly it is a unique form of information.</p>
