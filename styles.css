@@ -1046,6 +1046,14 @@ main {
 .chart-card .bellCurve {
     width: 100%;
     min-height: clamp(240px, 32vw, 300px);
+    touch-action: pan-y;
+}
+
+/* Display-only charts: kill Plotly's drag/zoom/hover layer so a finger
+   (or mouse) can't move the plot and vertical scrolling passes through. */
+.bellCurve .draglayer,
+.bellCurve .draglayer * {
+    pointer-events: none !important;
 }
 
 .chart-card__caption {
@@ -1254,6 +1262,9 @@ a:hover { color: var(--link-hover); }
     }
     .nav-link { font-size: 0.72rem; }
     .chart-card .bellCurve { min-height: 240px; }
+
+    /* push the chips down by ~one pill height toward the fold */
+    .hex-chips { margin-top: clamp(30px, 8vw, 42px); }
 
     /* About lead flows as one sentence instead of two stacked lines */
     #about .zone-lead--stacked { display: block; }
