@@ -13,6 +13,12 @@ const HEX_TRAITS = [
         'images/Exploring_the_Relationship_between_Psychopathy_and_Helping_Behaviors_in_Naturalistic_Settings_Preliminary_Findings_2.png',
       ],
     },
+    note: `
+      <p>Whilst I probably agree that Honesty-Humility is just, as studies suggest, data already picked up by Politeness in the Big Five (10) model - the fact that I diverge on one out of four of the Honesty-Humility subtraits implies to me that possibly it is a unique form of information.</p>
+      <p>I obviously knew I would score low on Honesty-Humility, but I did not predict that there would be a wing of it that I would score high on - I knew this fact about myself but didn't realise it was a core facet of the Dark Triad but its obvious of course when reading what it is. So it does make sense to me as I am only 80th percentile overall in Dark Traits when I do Hare, IDRlabs, or etc - not 100th percentile.</p>
+      <p>This gave me a visual representation possibly as to what my brain is deciding to obviscate from in difference to other low in Politeness (people who prioritise themselves over the Other) humans - the people I feel closest too (dark triad being highly assortitative). This gave me a good mental image which helped me map together what was causing me to not be 100% absorbed into those social circles I felt most calm in - I do not obviously feel safe and warm around high emotionality/high conscientious people.</p>
+      <p>I find other disagreeable people complimentary to my base mental state - and feel agreeable people are going to burn me at the stake for saying a disagreeable thing at any moment because of their lack of emotional regulation which puts me on edge constantly. Ie, their adherance to a magical-fantasy status quo that is often illogical and disconnected to physical reality kills me. I do not blame them, its just, uncomplimentary and makes me hate people so I try and avoid the interaction because it creates a distrust of humanity which is uncomplimentary to me wanting to invent logical things FOR humanity. I lose my prosocial inventive "oomph" the more I hang around with people uncomplimentary to me - who require me to mask my disagreeableness - as a female obviously this is more of my daily norm as women tend to be higher in emotionality and agreeableness.</p>
+    `,
   },
   { id: 'emotionality', label: 'Emotionality', short: 'E' },
   { id: 'extraversion', label: 'eXtraversion', short: 'X' },
@@ -196,6 +202,16 @@ function buildHexMark(traitId) {
   return `<p class="hex-mark hex-mark--${traitId}" aria-hidden="true"><span class="hex-mark__lo">${mark.before}</span><span class="hex-mark__hi">${mark.letter}</span><span class="hex-mark__lo">${mark.after}</span></p>`;
 }
 
+function buildNoteBlock(noteHtml) {
+  const block = document.createElement('div');
+  block.className = 'trait-panel__note card';
+  block.innerHTML = `
+    <p class="trait-note__label">Note</p>
+    <div class="trait-note__body">${noteHtml}</div>
+  `;
+  return block;
+}
+
 function buildStudyBlock(study) {
   const block = document.createElement('div');
   block.className = 'trait-panel__study card';
@@ -301,6 +317,11 @@ function buildTraitResultZones() {
     facetCharts.appendChild(facetGrid);
     panel.appendChild(facetCharts);
 
+    // optional personal note, under the last facet
+    if (trait.note) {
+      panel.appendChild(buildNoteBlock(trait.note));
+    }
+
     container.append(intro, panel);
     zone.appendChild(container);
     mount.appendChild(zone);
@@ -354,4 +375,3 @@ const HEX_MARKS = {
 
 window.buildHexMark = buildHexMark;
 window.HEX_MARKS = HEX_MARKS;
-
