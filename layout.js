@@ -5,7 +5,7 @@ const HEX_TRAITS = [
     short: 'H',
     audio: 'audio/Record_03.03.2023__043029.mp3',
     study: {
-      url: 'https://doi.org/10.1080/00221309.2016.1214099',
+      url: 'https://sci-hub.red/10.1080/00221309.2016.1214099',
       title:
         'Exploring the Relationship between Psychopathy and Helping Behaviors in Naturalistic Settings: Preliminary Findings',
       images: [
