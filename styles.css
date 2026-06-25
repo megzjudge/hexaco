@@ -244,7 +244,7 @@ body {
 }
 
 .intro-icon {
-    width: clamp(72px, 14vw, 110px);
+    width: clamp(150px, 24vw, 260px);
     height: auto;
     margin-bottom: 16px;
 }
@@ -1088,6 +1088,102 @@ main {
 }
 
 .results-figure__link:hover { color: var(--link-hover); }
+
+/* ─── Lightbox ─── */
+.trait-study__shot,
+.results-figure__frame {
+    cursor: zoom-in;
+}
+
+.lightbox {
+    position: fixed;
+    inset: 0;
+    z-index: 1000;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    padding: clamp(16px, 4vw, 48px);
+}
+
+.lightbox.is-open {
+    display: flex;
+}
+
+.lightbox__backdrop {
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.84);
+    -webkit-backdrop-filter: blur(3px);
+    backdrop-filter: blur(3px);
+}
+
+.lightbox__content {
+    position: relative;
+    margin: 0;
+    max-width: min(1100px, 96vw);
+    max-height: 92vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+}
+
+.lightbox__img {
+    max-width: 100%;
+    max-height: 80vh;
+    width: auto;
+    height: auto;
+    border-radius: var(--radius);
+    border: 1px solid var(--surface-border);
+    background: rgba(0, 0, 0, 0.3);
+    box-shadow: 0 24px 70px rgba(0, 0, 0, 0.55);
+}
+
+.lightbox__close {
+    position: fixed;
+    top: clamp(12px, 2vw, 24px);
+    right: clamp(12px, 2vw, 24px);
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    border: 1px solid var(--surface-border);
+    background: var(--surface);
+    color: #fff;
+    font-size: 1.5rem;
+    line-height: 1;
+    cursor: pointer;
+    display: grid;
+    place-items: center;
+    z-index: 1;
+}
+
+.lightbox__close:hover {
+    color: var(--link-hover);
+    border-color: var(--hex-accent);
+}
+
+.lightbox__caption {
+    color: var(--text-soft);
+    font-size: 0.85rem;
+    line-height: 1.5;
+    text-align: center;
+    max-width: 70ch;
+}
+
+.lightbox__open {
+    color: var(--link);
+    font-size: 0.85rem;
+    font-weight: 600;
+    text-decoration: none;
+}
+
+.lightbox__open:hover {
+    color: var(--link-hover);
+}
+
+body.lightbox-open {
+    overflow: hidden;
+}
 
 /* ─── Disclaimer ─── */
 .disclaimer-panel {
