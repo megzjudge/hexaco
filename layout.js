@@ -23,7 +23,7 @@ const HEX_TRAITS = [
         ],
       },
       {
-        url: 'https://armlab.org/pdfs/papers/2021%20-%20Kay%20-%20Negative%20traits,%20positive%20assortment%20Revisiting%20the%20Dark%20Triad%20and%20a%20preference%20for%20similar%20others.pdf,
+        url: 'https://armlab.org/pdfs/papers/2021%20-%20Kay%20-%20Negative%20traits,%20positive%20assortment%20Revisiting%20the%20Dark%20Triad%20and%20a%20preference%20for%20similar%20others.pdf',
         title:
           'Negative traits, positive assortment: Revisiting the Dark Triad and a preference for similar others',
         images: [
