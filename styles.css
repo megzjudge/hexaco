@@ -866,6 +866,61 @@ main {
     color: var(--link-hover);
 }
 
+.trait-panel__study {
+    margin: 0 20px 20px;
+    box-shadow: none;
+}
+
+.trait-study__label {
+    margin: 0 0 8px;
+    font-size: 0.78rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--hex-accent);
+}
+
+.trait-study__title {
+    margin: 0 0 14px;
+    font-size: 0.9rem;
+    line-height: 1.5;
+}
+
+.trait-study__title a {
+    color: var(--link);
+    border-bottom: 1px solid rgba(200, 230, 160, 0.4);
+    text-decoration: none;
+}
+
+.trait-study__title a:hover {
+    color: var(--link-hover);
+}
+
+.trait-study__shots {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 240px), 1fr));
+    gap: 12px;
+}
+
+.trait-study__shot {
+    display: block;
+    border-radius: var(--radius-sm);
+    overflow: hidden;
+    border: 1px solid var(--surface-border);
+    background: rgba(0, 0, 0, 0.2);
+    transition: border-color 0.2s ease;
+}
+
+.trait-study__shot:hover {
+    border-color: var(--hex-accent);
+}
+
+.trait-study__shot img {
+    display: block;
+    width: 100%;
+    height: auto;
+}
+
 .trait-panel__charts {
     display: flex;
     flex-direction: column;
