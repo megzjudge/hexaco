@@ -1231,8 +1231,18 @@ a { color: var(--link); }
 a:hover { color: var(--link-hover); }
 
 @media (max-width: 600px) {
+    .hero {
+        min-height: auto;
+        padding-top: 22px;
+    }
+    .logo {
+        white-space: nowrap;
+        max-width: none;
+        font-size: clamp(0.62rem, 2.9vw, 0.82rem);
+    }
     .header-inner {
-        padding: 12px 0;
+        padding-block: 12px;
+        padding-right: clamp(20px, 5vw, 30px);
     }
     .nav {
         gap: 8px 16px;
