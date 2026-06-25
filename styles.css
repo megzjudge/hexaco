@@ -929,6 +929,15 @@ main {
     padding: 0 20px 20px;
 }
 
+/* overview curve sits flush against the description below it */
+.trait-panel__charts--overview {
+    padding-bottom: 0;
+}
+
+.trait-panel__charts--overview + .trait-panel__description {
+    margin-top: 0;
+}
+
 .trait-panel__facet-charts {
     grid-template-columns: repeat(auto-fit, minmax(min(100%, 260px), 1fr));
 }
