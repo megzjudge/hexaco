@@ -348,6 +348,12 @@ main {
 
 .flow-zone--results { padding-top: clamp(28px, 4vh, 40px); }
 
+.flow-zone--summary {
+    background:
+        linear-gradient(165deg, rgba(78, 110, 57, 0.08) 0%, transparent 42%),
+        rgba(0, 0, 0, 0.15);
+}
+
 .zone-intro {
     text-align: center;
     margin-bottom: clamp(24px, 4vh, 40px);
@@ -910,7 +916,7 @@ main {
 
 .trait-study__shots {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(min(100%, 240px), 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(min(100%, 240px), 1fr));
     align-items: start;
     gap: 12px;
 }
@@ -1032,6 +1038,7 @@ main {
     box-shadow: none;
     background: rgba(0, 0, 0, 0.25);
     padding: 12px;
+    border-radius: var(--radius);
 }
 
 .chart-card .bellCurve {
