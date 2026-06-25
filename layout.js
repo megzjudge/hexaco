@@ -196,29 +196,6 @@ function buildHexMark(traitId) {
   return `<p class="hex-mark hex-mark--${traitId}" aria-hidden="true"><span class="hex-mark__lo">${mark.before}</span><span class="hex-mark__hi">${mark.letter}</span><span class="hex-mark__lo">${mark.after}</span></p>`;
 }
 
-function buildTraitNotesBlock(traitId) {
-  const block = document.createElement('div');
-  block.className = 'trait-panel__notes card';
-  const raw = typeof TRAIT_NOTES !== 'undefined' ? (TRAIT_NOTES[traitId] || '').trim() : '';
-
-  const label = document.createElement('p');
-  label.className = 'trait-notes__label';
-  label.textContent = 'My read on these results';
-
-  const body = document.createElement('div');
-  body.className = 'trait-notes__body';
-
-  if (raw) {
-    body.innerHTML = raw;
-  } else {
-    block.classList.add('trait-panel__notes--empty');
-    body.innerHTML = `<p class="trait-notes__placeholder">Add your explanation in <code>trait-notes.js</code> under <strong>${traitId}</strong>.</p>`;
-  }
-
-  block.append(label, body);
-  return block;
-}
-
 function buildStudyBlock(study) {
   const block = document.createElement('div');
   block.className = 'trait-panel__study card';
@@ -324,9 +301,6 @@ function buildTraitResultZones() {
     facetCharts.appendChild(facetGrid);
     panel.appendChild(facetCharts);
 
-    // 7. my explanation
-    panel.appendChild(buildTraitNotesBlock(trait.id));
-
     container.append(intro, panel);
     zone.appendChild(container);
     mount.appendChild(zone);
@@ -361,7 +335,7 @@ function buildTraitResultZones() {
     description.className = 'trait-panel__description card';
     description.innerHTML = `<p>${HEXACO_ALTRUISM.text}</p>`;
 
-    panel.append(charts, description, buildTraitNotesBlock('altruism'));
+    panel.append(charts, description);
 
     container.appendChild(panel);
     zone.appendChild(container);
