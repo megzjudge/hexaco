@@ -1238,7 +1238,7 @@ a:hover { color: var(--link-hover); }
     .logo {
         white-space: nowrap;
         max-width: none;
-        font-size: clamp(0.62rem, 2.9vw, 0.82rem);
+        font-size: clamp(0.72rem, 3.4vw, 0.95rem);
     }
     .header-inner {
         padding-block: 12px;
