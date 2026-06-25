@@ -928,6 +928,37 @@ main {
     height: auto;
 }
 
+.trait-panel__note {
+    margin: 0 20px 24px;
+    box-shadow: none;
+    border-style: dashed;
+    border-color: rgba(78, 110, 57, 0.35);
+    background: rgba(78, 110, 57, 0.06);
+}
+
+.trait-note__label {
+    margin: 0 0 12px;
+    font-size: 0.78rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--hex-accent);
+}
+
+.trait-note__body {
+    color: var(--text-soft);
+    font-size: 0.92rem;
+    line-height: 1.65;
+}
+
+.trait-note__body p {
+    margin: 0 0 0.75em;
+}
+
+.trait-note__body p:last-child {
+    margin-bottom: 0;
+}
+
 .trait-panel__charts {
     display: flex;
     flex-direction: column;
