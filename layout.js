@@ -1,5 +1,19 @@
 const HEX_TRAITS = [
-  { id: 'honesty', label: 'Honesty-Humility', short: 'H', audio: 'audio/Record_03.03.2023__043029.mp3' },
+  {
+    id: 'honesty',
+    label: 'Honesty-Humility',
+    short: 'H',
+    audio: 'audio/Record_03.03.2023__043029.mp3',
+    study: {
+      url: 'https://doi.org/10.1080/00221309.2016.1214099',
+      title:
+        'Exploring the Relationship between Psychopathy and Helping Behaviors in Naturalistic Settings: Preliminary Findings',
+      images: [
+        'images/Exploring_the_Relationship_between_Psychopathy_and_Helping_Behaviors_in_Naturalistic_Settings_Preliminary_Findings.png',
+        'images/Exploring_the_Relationship_between_Psychopathy_and_Helping_Behaviors_in_Naturalistic_Settings_Preliminary_Findings_2.png',
+      ],
+    },
+  },
   { id: 'emotionality', label: 'Emotionality', short: 'E' },
   { id: 'extraversion', label: 'eXtraversion', short: 'X' },
   { id: 'agreeableness', label: 'Agreeableness', short: 'A' },
@@ -205,6 +219,29 @@ function buildTraitNotesBlock(traitId) {
   return block;
 }
 
+function buildStudyBlock(study) {
+  const block = document.createElement('div');
+  block.className = 'trait-panel__study card';
+
+  const imagesHtml = (study.images || [])
+    .map(
+      (src, i) => `
+      <a class="trait-study__shot" href="${src}" target="_blank" rel="noopener">
+        <img src="${src}" alt="${study.title} — figure ${i + 1}" loading="lazy">
+      </a>`
+    )
+    .join('');
+
+  block.innerHTML = `
+    <p class="trait-study__label">Referenced study</p>
+    <p class="trait-study__title">
+      <a href="${study.url}" target="_blank" rel="noopener">${study.title} ↗</a>
+    </p>
+    ${imagesHtml ? `<div class="trait-study__shots">${imagesHtml}</div>` : ''}
+  `;
+  return block;
+}
+
 function buildTraitResultZones() {
   if (typeof graphsData === 'undefined' || typeof HEXACO_DOMAINS === 'undefined') return;
 
@@ -244,8 +281,14 @@ function buildTraitResultZones() {
     description.className = 'trait-panel__description card';
     description.innerHTML = `<p>${domain.description}</p>`;
 
-    panel.append(head, description);
+    // 1. title  →  2. overall bell curve  →  3. overall explanation
+    const overviewCharts = document.createElement('div');
+    overviewCharts.className = 'trait-panel__charts trait-panel__charts--overview';
+    overviewCharts.appendChild(buildChartCard(domainGraph));
 
+    panel.append(head, overviewCharts, description);
+
+    // 4. audio
     if (trait.audio) {
       const audioBlock = document.createElement('div');
       audioBlock.className = 'trait-panel__audio card';
@@ -262,12 +305,14 @@ function buildTraitResultZones() {
       panel.appendChild(audioBlock);
     }
 
-    const charts = document.createElement('div');
-    charts.className = 'trait-panel__charts';
+    // 5. link to study + screenshots
+    if (trait.study) {
+      panel.appendChild(buildStudyBlock(trait.study));
+    }
 
-    const domainCard = buildChartCard(domainGraph);
-    charts.appendChild(domainCard);
-
+    // 6. subtrait bell curves + explanations
+    const facetCharts = document.createElement('div');
+    facetCharts.className = 'trait-panel__charts trait-panel__charts--facets';
     const facetGrid = document.createElement('div');
     facetGrid.className = 'trait-panel__facet-charts chart-grid';
     domain.facets.forEach((facet) => {
@@ -276,9 +321,11 @@ function buildTraitResultZones() {
       );
       if (facetGraph) facetGrid.appendChild(buildChartCard(facetGraph, facet.text));
     });
-    charts.appendChild(facetGrid);
+    facetCharts.appendChild(facetGrid);
+    panel.appendChild(facetCharts);
 
-    panel.append(charts, buildTraitNotesBlock(trait.id));
+    // 7. my explanation
+    panel.appendChild(buildTraitNotesBlock(trait.id));
 
     container.append(intro, panel);
     zone.appendChild(container);
@@ -304,14 +351,17 @@ function buildTraitResultZones() {
         </div>
         <span class="trait-panel__score">${altruismGraph.value}</span>
       </header>
-      <div class="trait-panel__description card"><p>${HEXACO_ALTRUISM.text}</p></div>
     `;
 
     const charts = document.createElement('div');
-    charts.className = 'trait-panel__charts';
+    charts.className = 'trait-panel__charts trait-panel__charts--overview';
     charts.appendChild(buildChartCard(altruismGraph));
-    panel.appendChild(charts);
-    panel.appendChild(buildTraitNotesBlock('altruism'));
+
+    const description = document.createElement('div');
+    description.className = 'trait-panel__description card';
+    description.innerHTML = `<p>${HEXACO_ALTRUISM.text}</p>`;
+
+    panel.append(charts, description, buildTraitNotesBlock('altruism'));
 
     container.appendChild(panel);
     zone.appendChild(container);
