@@ -1231,6 +1231,9 @@ a { color: var(--link); }
 a:hover { color: var(--link-hover); }
 
 @media (max-width: 600px) {
+    .header-inner {
+        padding: 12px 0;
+    }
     .nav {
         gap: 8px 16px;
     }
