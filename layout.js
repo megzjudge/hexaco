@@ -27,8 +27,8 @@ const HEX_TRAITS = [
         title:
           'Negative traits, positive assortment: Revisiting the Dark Triad and a preference for similar others',
         images: [
-          'images/Negative_traits_positive_assortment_Revisiting_the_Dark_Triad_and_a_preference_for_similar_others.png',
           'images/Negative_traits_positive_assortment_Revisiting_the_Dark_Triad_and_a_preference_for_similar_others_2.png',
+          'images/Negative_traits_positive_assortment_Revisiting_the_Dark_Triad_and_a_preference_for_similar_others.png',
         ],
       },
     ],
