@@ -4,15 +4,25 @@ const HEX_TRAITS = [
     label: 'Honesty-Humility',
     short: 'H',
     audio: 'audio/Record_03.03.2023__043029.mp3',
-    study: {
-      url: 'https://sci-hub.red/10.1080/00221309.2016.1214099',
-      title:
-        'Exploring the Relationship between Psychopathy and Helping Behaviors in Naturalistic Settings: Preliminary Findings',
-      images: [
-        'images/Exploring_the_Relationship_between_Psychopathy_and_Helping_Behaviors_in_Naturalistic_Settings_Preliminary_Findings.png',
-        'images/Exploring_the_Relationship_between_Psychopathy_and_Helping_Behaviors_in_Naturalistic_Settings_Preliminary_Findings_2.png',
-      ],
-    },
+    study: [
+      {
+        url: 'https://sci-hub.red/10.1080/00221309.2016.1214099',
+        title:
+          'Exploring the Relationship between Psychopathy and Helping Behaviors in Naturalistic Settings: Preliminary Findings',
+        images: [
+          'images/Exploring_the_Relationship_between_Psychopathy_and_Helping_Behaviors_in_Naturalistic_Settings_Preliminary_Findings.png',
+          'images/Exploring_the_Relationship_between_Psychopathy_and_Helping_Behaviors_in_Naturalistic_Settings_Preliminary_Findings_2.png',
+        ],
+      },
+      {
+        url: 'https://journals.sagepub.com/doi/pdf/10.1177/27000710251408730',
+        title:
+          'Honesty-Humility is to Politeness as Agreeableness is to Agreeableness: A Reanalysis of Blötner (2025)',
+        images: [
+          'images/Honesty-Humility_is_to_Politeness_as_Agreeableness_is_to_Agreeableness_A_Reanalysis_of_Blotner.png',
+        ],
+      },
+    ],
     note: `
       <p>Whilst I probably agree that Honesty-Humility is just, as studies suggest, data already picked up by Politeness in the Big Five (10) model - the fact that I diverge on one out of four of the Honesty-Humility subtraits implies to me that possibly it is a unique form of information.</p>
       <p>I obviously knew I would score low on Honesty-Humility, but I did not predict that there would be a wing of it that I would score high on - I knew this fact about myself but didn't realise it was a core facet of the Dark Triad but its obvious of course when reading what it is. So it does make sense to me as I am only 80th percentile overall in Dark Traits when I do Hare, IDRlabs, or etc - not 100th percentile.</p>
@@ -212,25 +222,36 @@ function buildNoteBlock(noteHtml) {
   return block;
 }
 
-function buildStudyBlock(study) {
+function buildStudyBlock(studies) {
+  const list = Array.isArray(studies) ? studies : [studies];
+
   const block = document.createElement('div');
   block.className = 'trait-panel__study card';
 
-  const imagesHtml = (study.images || [])
-    .map(
-      (src, i) => `
-      <a class="trait-study__shot" href="${src}" target="_blank" rel="noopener">
-        <img src="${src}" alt="${study.title} — figure ${i + 1}" loading="lazy">
-      </a>`
-    )
+  const entriesHtml = list
+    .map((study) => {
+      const imagesHtml = (study.images || [])
+        .map(
+          (src, i) => `
+          <a class="trait-study__shot" href="${src}" target="_blank" rel="noopener">
+            <img src="${src}" alt="${study.title} — figure ${i + 1}" loading="lazy">
+          </a>`
+        )
+        .join('');
+
+      return `
+        <div class="trait-study__entry">
+          <p class="trait-study__title">
+            <a href="${study.url}" target="_blank" rel="noopener">${study.title} ↗</a>
+          </p>
+          ${imagesHtml ? `<div class="trait-study__shots">${imagesHtml}</div>` : ''}
+        </div>`;
+    })
     .join('');
 
   block.innerHTML = `
-    <p class="trait-study__label">Referenced study</p>
-    <p class="trait-study__title">
-      <a href="${study.url}" target="_blank" rel="noopener">${study.title} ↗</a>
-    </p>
-    ${imagesHtml ? `<div class="trait-study__shots">${imagesHtml}</div>` : ''}
+    <p class="trait-study__label">${list.length > 1 ? 'Referenced studies' : 'Referenced study'}</p>
+    ${entriesHtml}
   `;
   return block;
 }
