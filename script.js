@@ -194,16 +194,26 @@ function drawBellCurve(bellDiv, title, userValue) {
     });
   }
 
+  // On mobile, wrap the long "Domain: Facet" title onto two lines and
+  // shrink internal fonts so nothing overflows the narrow plot frame.
+  const titleText = isMobile ? title.replace(': ', ':<br>') : title;
+
   const layout = {
-    title: title,
+    title: {
+      text: titleText,
+      font: { size: isMobile ? 13 : 17 },
+      x: 0.5,
+      xanchor: 'center'
+    },
     xaxis: {
-      title: { text: 'Percentile Score (th)', standoff: 50 },
+      title: { text: 'Percentile Score (th)', standoff: 50, font: { size: isMobile ? 11 : 14 } },
       zeroline: false,
       showgrid: false,
-      tickvals: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+      tickvals: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
+      tickfont: { size: isMobile ? 10 : 12 }
     },
     yaxis: {
-      title: 'Population Likelihood',
+      title: { text: 'Population Likelihood', font: { size: isMobile ? 11 : 14 } },
       showticklabels: false,
       showgrid: false
     },
