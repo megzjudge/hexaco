@@ -1203,6 +1203,8 @@ body.lightbox-open {
 
 /* ─── Footer ─── */
 .site-footer {
+    position: relative;
+    z-index: 1;
     padding: 28px 0 40px;
     color: rgba(255, 255, 255, 0.45);
     font-size: 0.82rem;
@@ -1266,22 +1268,15 @@ a:hover { color: var(--link-hover); }
     /* push the chips down by ~one pill height toward the fold */
     .hex-chips { margin-top: clamp(30px, 8vw, 42px); }
 
-    /* trait section backgrounds run edge-to-edge:
-       break the whole stream out of the outer results-container padding... */
+    /* only the section background runs edge-to-edge; panels keep their
+       original inset + rounded corners (internal components untouched) */
     .trait-stream {
         margin-left: calc(-1 * clamp(16px, 4vw, 28px));
         margin-right: calc(-1 * clamp(16px, 4vw, 28px));
     }
-    /* ...then drop the inner padding so the panels fill that full width */
-    .trait-zone .container {
-        padding-left: 0;
-        padding-right: 0;
-    }
-    .trait-panel {
-        border-radius: 0;
-        border-left: none;
-        border-right: none;
-    }
+
+    /* more breathing room beneath the results score pills */
+    .score-overview { margin-bottom: clamp(48px, 11vw, 72px); }
 
     /* About lead flows as one sentence instead of two stacked lines */
     #about .zone-lead--stacked { display: block; }
