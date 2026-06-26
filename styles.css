@@ -1241,7 +1241,7 @@ a:hover { color: var(--link-hover); }
 @media (max-width: 600px) {
     .hero {
         min-height: auto;
-        padding-top: 22px;
+        padding-top: clamp(44px, 11vw, 60px);
     }
     .logo {
         white-space: nowrap;
@@ -1265,6 +1265,15 @@ a:hover { color: var(--link-hover); }
 
     /* push the chips down by ~one pill height toward the fold */
     .hex-chips { margin-top: clamp(30px, 8vw, 42px); }
+
+    /* trait section backgrounds run edge-to-edge (break out of the container padding) */
+    .trait-panel {
+        margin-left: calc(-1 * clamp(16px, 4vw, 28px));
+        margin-right: calc(-1 * clamp(16px, 4vw, 28px));
+        border-radius: 0;
+        border-left: none;
+        border-right: none;
+    }
 
     /* About lead flows as one sentence instead of two stacked lines */
     #about .zone-lead--stacked { display: block; }
