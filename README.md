@@ -2,8 +2,6 @@
 
 A single-page site that visualises a full set of **HEXACO Personality Inventory** results — six domains, 24 facets, and the interstitial Altruism scale — as animated population bell curves, alongside the official scale descriptions and some personal commentary.
 
-**Live:** <https://hexaco.jdge.cc>
-
 ---
 
 ## About
@@ -48,10 +46,6 @@ audio/              Audio reflection
 - **Scale text** (domain and facet descriptions, language list) lives in `scale-content.js`.
 - **Per-trait extras** — audio clips, referenced studies (with images), and personal notes are configured in the `HEX_TRAITS` array at the top of `layout.js`. Add an `audio`, `study`, or `note` field to any trait to render that block.
 - **Bell-curve behaviour** (population mean, standard deviation, resolution, animation) is set in `script.js`.
-
-## Deployment
-
-Pushing to the connected branch triggers a **Cloudflare Pages** deploy. There's no build command — Pages serves the static files as-is.
 
 ## Credits & attribution
 
