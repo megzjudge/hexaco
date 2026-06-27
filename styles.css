@@ -351,6 +351,7 @@ main {
 .flow-zone--results { padding-top: clamp(28px, 4vh, 40px); }
 
 .flow-zone--summary {
+    padding-top: clamp(36px, 7vh, 64px);
     background:
         linear-gradient(165deg, rgba(78, 110, 57, 0.08) 0%, transparent 42%),
         rgba(0, 0, 0, 0.15);
@@ -839,7 +840,7 @@ main {
 }
 
 .trait-panel__audio {
-    margin: 0 20px 20px;
+    margin: 0;
     box-shadow: none;
 }
 
@@ -881,7 +882,7 @@ main {
 }
 
 .trait-panel__study {
-    margin: 0 20px 20px;
+    margin: 0;
     box-shadow: none;
 }
 
@@ -977,20 +978,7 @@ main {
     display: flex;
     flex-direction: column;
     gap: 20px;
-    padding: 0 20px 20px;
-}
-
-/* overview curve sits flush against the description below it */
-.trait-panel__charts--overview {
-    padding-bottom: 0;
-}
-
-.trait-panel__charts--overview + .trait-panel__description {
-    margin-top: 0;
-}
-
-.trait-panel__facet-charts {
-    grid-template-columns: repeat(auto-fit, minmax(min(100%, 260px), 1fr));
+    padding: 20px;
 }
 
 .trait-panel__facets {
@@ -1213,14 +1201,16 @@ body.lightbox-open {
 
 .footer-inner {
     display: flex;
+    flex-direction: column;
     align-items: center;
-    justify-content: space-between;
+    justify-content: center;
+    text-align: center;
     flex-wrap: wrap;
     gap: 12px;
 }
 
 .footer-credit { margin: 0; }
-.footer-credit strong { color: rgba(255, 255, 255, 0.7); }
+.footer-credit strong { color: rgba(255, 255, 255, 0.7); font-weight: 400; }
 
 .footer-links {
     display: flex;
