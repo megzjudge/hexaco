@@ -22,21 +22,12 @@ const HEX_TRAITS = [
           'images/Honesty-Humility_is_to_Politeness_as_Agreeableness_is_to_Agreeableness_A_Reanalysis_of_Blotner.png',
         ],
       },
-      {
-        url: 'https://armlab.org/pdfs/papers/2021%20-%20Kay%20-%20Negative%20traits,%20positive%20assortment%20Revisiting%20the%20Dark%20Triad%20and%20a%20preference%20for%20similar%20others.pdf',
-        title:
-          'Negative traits, positive assortment: Revisiting the Dark Triad and a preference for similar others',
-        images: [
-          'images/Negative_traits_positive_assortment_Revisiting_the_Dark_Triad_and_a_preference_for_similar_others_2.png',
-          'images/Negative_traits_positive_assortment_Revisiting_the_Dark_Triad_and_a_preference_for_similar_others.png',
-        ],
-      },
     ],
     note: `
       <p>Whilst I probably agree that Honesty-Humility is just, as studies suggest, data already picked up by Politeness in the Big Five (10) model - the fact that I diverge on one out of four of the Honesty-Humility subtraits implies to me that possibly it is a unique form of information.</p>
       <p>I obviously knew I would score low on Honesty-Humility, but I did not predict that there would be a wing of it that I would score high on - I knew this fact about myself but didn't realise it was a core facet of the Dark Triad but its obvious of course when reading what it is.</p>
-      <p>This gave me a visual representation possibly as to what my brain is deciding to obfuscate from, in difference to other low in Politeness (people who prioritise themselves over the Other) humans - the people I feel closest too (dark triad being highly assortitative). This gave me a good mental image which helped me map together what was causing me to not be 100% absorbed into those social circles I felt most calm in - I do not obviously feel safe and warm around high emotionality/high conscientious people - as a female obviously this is more of my daily norm as women tend to be higher in emotionality and agreeableness.</p>
-      <p>I find other disagreeable people complimentary to my base mental state - and feel agreeable people are going to burn me at the stake for saying a disagreeable thing at any moment because of their lack of emotional regulation which puts me on edge constantly. Ie, their adherance to a magical-fantasy status quo that is often illogical and disconnected to physical reality kills me. I do not blame them, its just, uncomplimentary and makes me hate people so I try and avoid the interaction because it creates a distrust of humanity which is uncomplimentary to me wanting to invent logical things FOR humanity. I lose my prosocial inventive "oomph" the more I hang around with people uncomplimentary to me - who require me to mask my disagreeableness.</p>
+      <p>This gave me a visual representation possibly as to what my brain is deciding to obviscate from in difference to other low in Politeness (people who prioritise themselves over the Other) humans - the people I feel closest too (dark triad being highly assortitative). This gave me a good mental image which helped me map together what was causing me to not be 100% absorbed into those social circles I felt most calm in - I do not obviously feel safe and warm around high emotionality/high conscientious people.</p>
+      <p>I find other disagreeable people complimentary to my base mental state - and feel agreeable people are going to burn me at the stake for saying a disagreeable thing at any moment because of their lack of emotional regulation which puts me on edge constantly. Ie, their adherance to a magical-fantasy status quo that is often illogical and disconnected to physical reality kills me. I do not blame them, its just, uncomplimentary and makes me hate people so I try and avoid the interaction because it creates a distrust of humanity which is uncomplimentary to me wanting to invent logical things FOR humanity. I lose my prosocial inventive "oomph" the more I hang around with people uncomplimentary to me - who require me to mask my disagreeableness - as a female obviously this is more of my daily norm as women tend to be higher in emotionality and agreeableness.</p>
     `,
   },
   { id: 'emotionality', label: 'Emotionality', short: 'E' },
@@ -300,18 +291,15 @@ function buildTraitResultZones() {
       <span class="trait-panel__score">${domainGraph.value}</span>
     `;
 
-    const description = document.createElement('div');
-    description.className = 'trait-panel__description card';
-    description.innerHTML = `<p>${domain.description}</p>`;
+    // All bell curves + their explanations flow through one container so the
+    // spacing between every "curve + explanation" unit is identical.
+    const charts = document.createElement('div');
+    charts.className = 'trait-panel__charts';
 
-    // 1. title  →  2. overall bell curve  →  3. overall explanation
-    const overviewCharts = document.createElement('div');
-    overviewCharts.className = 'trait-panel__charts trait-panel__charts--overview';
-    overviewCharts.appendChild(buildChartCard(domainGraph));
+    // overall bell curve with its explanation embedded (same as the facets)
+    charts.appendChild(buildChartCard(domainGraph, domain.description));
 
-    panel.append(head, overviewCharts, description);
-
-    // 4. audio
+    // audio
     if (trait.audio) {
       const audioBlock = document.createElement('div');
       audioBlock.className = 'trait-panel__audio card';
@@ -325,27 +313,23 @@ function buildTraitResultZones() {
           <li>Also recommended: <a href="https://amazon.com/Wisdom-Psychopaths-Saints-Killers-Success/dp/0374533989/" target="_blank" rel="noopener">The Wisdom of Psychopaths ↗</a></li>
         </ul>
       `;
-      panel.appendChild(audioBlock);
+      charts.appendChild(audioBlock);
     }
 
-    // 5. link to study + screenshots
+    // link to study + screenshots
     if (trait.study) {
-      panel.appendChild(buildStudyBlock(trait.study));
+      charts.appendChild(buildStudyBlock(trait.study));
     }
 
-    // 6. subtrait bell curves + explanations
-    const facetCharts = document.createElement('div');
-    facetCharts.className = 'trait-panel__charts trait-panel__charts--facets';
-    const facetGrid = document.createElement('div');
-    facetGrid.className = 'trait-panel__facet-charts chart-grid';
+    // subtrait bell curves + explanations
     domain.facets.forEach((facet) => {
       const facetGraph = graphsData.find(
         (g) => g.group === 'facet' && g.domain === domain.id && g.title.endsWith(facet.name)
       );
-      if (facetGraph) facetGrid.appendChild(buildChartCard(facetGraph, facet.text));
+      if (facetGraph) charts.appendChild(buildChartCard(facetGraph, facet.text));
     });
-    facetCharts.appendChild(facetGrid);
-    panel.appendChild(facetCharts);
+
+    panel.append(head, charts);
 
     // optional personal note, under the last facet
     if (trait.note) {
@@ -379,14 +363,10 @@ function buildTraitResultZones() {
     `;
 
     const charts = document.createElement('div');
-    charts.className = 'trait-panel__charts trait-panel__charts--overview';
-    charts.appendChild(buildChartCard(altruismGraph));
+    charts.className = 'trait-panel__charts';
+    charts.appendChild(buildChartCard(altruismGraph, HEXACO_ALTRUISM.text));
 
-    const description = document.createElement('div');
-    description.className = 'trait-panel__description card';
-    description.innerHTML = `<p>${HEXACO_ALTRUISM.text}</p>`;
-
-    panel.append(charts, description);
+    panel.append(charts);
 
     container.appendChild(panel);
     zone.appendChild(container);
