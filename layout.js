@@ -31,6 +31,14 @@ const HEX_TRAITS = [
           'images/Negative_traits_positive_assortment_Revisiting_the_Dark_Triad_and_a_preference_for_similar_others_2.png',
         ],
       },
+      {
+        url: 'https://books.google.com.au/books?hl=en&lr=&id=yfhgEAAAQBAJ&oi=fnd&pg=PA76&dq=%22Greed+Avoidance%22+hexaco&ots=wFB1-G9dzg&sig=51hMcrWowuYDlEltqjXiGHGpK2A&redir_esc=y#v=onepage&q&f=false',
+        title:
+          'HEXACO Personality: The Future of Dark Side Research?',
+        images: [
+          'images/HEXACO_Personality_The_Future_of_Dark_Side_Research.png',
+        ],
+      },
     ],
     note: `
       <p>Whilst I probably agree that Honesty-Humility is just, as studies suggest, data already picked up by Politeness in the Big Five (10) model - the fact that I diverge on one out of four of the Honesty-Humility subtraits implies to me that possibly it is a unique form of information.</p>
